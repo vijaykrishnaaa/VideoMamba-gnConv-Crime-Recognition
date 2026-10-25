@@ -1,0 +1,205 @@
+{
+  "seed": 7,
+  "init": "ucf101",
+  "test_acc_multiview": 40.714284777641296,
+  "test_acc_single_view": 42.85714328289032,
+  "test_balanced_acc": 31.55794038737182,
+  "test_macro_f1": 30.978297301826718,
+  "test_videos": 140,
+  "best": {
+    "epoch": 23,
+    "weights": "ema",
+    "val_acc": 56.19834661483765,
+    "val_loss": 1.416089415550232,
+    "train_acc": 63.94451661015169
+  },
+  "params": {
+    "total_active": 116237197,
+    "trainable": 99169549,
+    "frozen": 17067648,
+    "removed_inactive_gnconv": 181635072,
+    "v1_v3_equivalent_total": 297872269,
+    "per_component_total": {
+      "Patch Embedding": 374400,
+      "Mamba SSM Layers": 25030656,
+      "gnConv2D Modules": 90817536,
+      "Classification Head": 5005,
+      "Norm Layers": 9600
+    },
+    "per_component_trainable": {
+      "Patch Embedding": 0,
+      "Mamba SSM Layers": 8343552,
+      "gnConv2D Modules": 90817536,
+      "Classification Head": 5005,
+      "Norm Layers": 3456
+    }
+  },
+  "compute": {
+    "macs_by_part": {
+      "Patch embedding (Conv3d)": 462422016,
+      "Mamba Conv1d": 231800832,
+      "Mamba linear projections": 37942788096,
+      "gnConv2D (layers 16-23)": 142232100864,
+      "Classification head": 4992,
+      "Selective scan (estimate)": 4164452352
+    },
+    "total_gmacs": 185.033569152,
+    "total_gflops": 370.067138304,
+    "removed_gnconv_gmacs": 284.464201728,
+    "latency_ms_v100_fp32_b1": 58.101749420166016
+  },
+  "per_class": [
+    {
+      "class": "Abuse",
+      "support": 2,
+      "correct": 0,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0
+    },
+    {
+      "class": "Arrest",
+      "support": 5,
+      "correct": 0,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0
+    },
+    {
+      "class": "Arson",
+      "support": 9,
+      "correct": 6,
+      "precision": 0.8571428571428571,
+      "recall": 0.6666666666666666,
+      "f1": 0.75
+    },
+    {
+      "class": "Assault",
+      "support": 3,
+      "correct": 0,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0
+    },
+    {
+      "class": "Burglary",
+      "support": 13,
+      "correct": 6,
+      "precision": 0.35294117647058826,
+      "recall": 0.46153846153846156,
+      "f1": 0.4000000000000001
+    },
+    {
+      "class": "Explosion",
+      "support": 21,
+      "correct": 14,
+      "precision": 0.9333333333333333,
+      "recall": 0.6666666666666666,
+      "f1": 0.7777777777777778
+    },
+    {
+      "class": "Fighting",
+      "support": 5,
+      "correct": 2,
+      "precision": 0.6666666666666666,
+      "recall": 0.4,
+      "f1": 0.5
+    },
+    {
+      "class": "RoadAccidents",
+      "support": 23,
+      "correct": 18,
+      "precision": 0.6428571428571429,
+      "recall": 0.782608695652174,
+      "f1": 0.7058823529411765
+    },
+    {
+      "class": "Robbery",
+      "support": 5,
+      "correct": 2,
+      "precision": 0.07407407407407407,
+      "recall": 0.4,
+      "f1": 0.125
+    },
+    {
+      "class": "Shooting",
+      "support": 23,
+      "correct": 2,
+      "precision": 0.5,
+      "recall": 0.08695652173913043,
+      "f1": 0.14814814814814817
+    },
+    {
+      "class": "Shoplifting",
+      "support": 21,
+      "correct": 5,
+      "precision": 0.8333333333333334,
+      "recall": 0.23809523809523808,
+      "f1": 0.37037037037037035
+    },
+    {
+      "class": "Stealing",
+      "support": 5,
+      "correct": 2,
+      "precision": 0.18181818181818182,
+      "recall": 0.4,
+      "f1": 0.25000000000000006
+    },
+    {
+      "class": "Vandalism",
+      "support": 5,
+      "correct": 0,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0
+    }
+  ],
+  "config": {
+    "INIT": "ucf101",
+    "NUM_FRAMES": 8,
+    "IMG_SIZE": 224,
+    "UNFREEZE_LAST": 8,
+    "BATCH_SIZE": 2,
+    "ACCUM_STEPS": 8,
+    "EPOCHS": 40,
+    "WARMUP_EPOCHS": 3,
+    "PATIENCE": 10,
+    "LR_BACKBONE": 1e-05,
+    "LR_GNCONV": 0.0001,
+    "LR_HEAD": 0.001,
+    "WEIGHT_DECAY": 0.05,
+    "HEAD_DROPOUT": 0.5,
+    "DROP_PATH": 0.2,
+    "LABEL_SMOOTH": 0.1,
+    "MIXUP_ALPHA": 0.3,
+    "GRAD_CLIP": 1.0,
+    "EMA_DECAY": 0.995,
+    "RRC_SCALE": [
+      0.4,
+      1.0
+    ],
+    "RRC_RATIO": [
+      0.75,
+      1.3333333333333333
+    ],
+    "FLIP_P": 0.5,
+    "COLOR_JITTER": [
+      0.3,
+      0.3,
+      0.3,
+      0.05
+    ],
+    "GRAYSCALE_P": 0.1,
+    "ERASE_P": 0.25,
+    "ERASE_SCALE": [
+      0.02,
+      0.2
+    ],
+    "VAL_CLIPS": 2,
+    "VAL_CROPS": 3,
+    "TEST_CLIPS": 4,
+    "TEST_CROPS": 3,
+    "SEED": 7,
+    "PRETRAINED_PATH": "/home/y_rajeshwar/vlil_40/v1_ucf101/checkpoints_ucf101/best_ucf101_v6.pth"
+  }
+}

@@ -1,0 +1,14 @@
+true \ predicted,Dragging,Hitting,Kicking,Pushing,abuse,hair pulling,neck grabbing,punch,robbery,shooting,slap,snatching,stabbing
+Dragging,7,3,0,0,1,0,1,0,0,0,1,1,0
+Hitting,4,7,0,0,0,0,0,0,0,1,0,1,1
+Kicking,1,0,8,0,0,0,0,0,0,0,0,0,0
+Pushing,0,0,0,10,0,0,1,0,0,0,2,0,0
+abuse,0,0,0,1,6,0,1,0,1,1,0,1,0
+hair pulling,0,0,0,0,0,11,0,0,0,0,1,0,0
+neck grabbing,1,0,0,0,1,0,9,0,0,1,0,0,0
+punch,0,0,0,0,0,0,0,2,0,0,0,0,0
+robbery,0,0,0,0,0,1,0,0,7,0,0,1,0
+shooting,0,0,0,0,1,0,0,0,0,12,0,0,0
+slap,1,0,0,0,0,1,0,0,0,0,8,0,0
+snatching,1,0,0,1,1,0,0,0,0,0,0,9,1
+stabbing,0,0,0,1,1,0,0,1,0,0,0,0,12

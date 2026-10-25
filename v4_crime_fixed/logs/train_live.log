@@ -1,0 +1,501 @@
+===== JOB 93001.amritahpc on node01 started Sun Oct 11 16:41:28 IST 2026 =====
+Sun Oct 11 16:41:29 2026       
++-----------------------------------------------------------------------------+
+| NVIDIA-SMI 510.47.03    Driver Version: 510.47.03    CUDA Version: 11.6     |
+|-------------------------------+----------------------+----------------------+
+| GPU  Name        Persistence-M| Bus-Id        Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp  Perf  Pwr:Usage/Cap|         Memory-Usage | GPU-Util  Compute M. |
+|                               |                      |               MIG M. |
+|===============================+======================+======================|
+|   0  Tesla V100-PCIE...  Off  | 00000000:3B:00.0 Off |                    0 |
+| N/A   31C    P0    35W / 250W |      0MiB / 16384MiB |      2%      Default |
+|                               |                      |                  N/A |
++-------------------------------+----------------------+----------------------+
+                                                                               
++-----------------------------------------------------------------------------+
+| Processes:                                                                  |
+|  GPU   GI   CI        PID   Type   Process name                  GPU Memory |
+|        ID   ID                                                   Usage      |
+|=============================================================================|
+|  No running processes found                                                 |
++-----------------------------------------------------------------------------+
+======================================================================
+VideoMamba V9 — Experiment V4: fixed gnConv2D + clean data + validation-based selection
+======================================================================
+  Started: 2026-10-11 16:41:57
+  GPU: Tesla V100-PCIE-16GB | free 16.6 / 16.9 GB | PyTorch 2.1.1+cu118
+
+  ARCHITECTURE:
+    Backbone:        VideoMamba-Small (24 bidirectional Mamba layers, d=384)
+    Spatial module:  HorNet gnConv2D (order=5, kernels [3,5,7,1], GhostModule, zero-init)
+                     in layers 16-23, applied per frame on the 14x14 grid
+    Backbone file:   /home/y_rajeshwar/vlil_40/v4_crime_fixed/mamba_simple_v7.py
+  TRANSFER: Kinetics-400 -> UCF-101 (Mamba weights) -> Violence; gnConv starts at zero
+
+  HYPERPARAMETERS:
+    Frames/clip 8 | batch 2 x accum 8 = 16 | epochs 40 (warmup 3, early stop patience 10)
+    LR backbone 1e-05 | LR gnConv 0.0001 | LR head 0.001 | cosine schedule
+    AdamW weight decay 0.05 (no decay on norms/biases/A_log/D) | grad clip 1.0
+  REGULARIZATION (anti-overfitting):
+    Head dropout 0.5 (applied) | stochastic depth 0.2 | label smoothing 0.1
+    Mixup alpha 0.3 | EMA decay 0.995 | frozen layers 0-15 in eval mode
+  DATA AUGMENTATION (same random draw for all frames of a clip):
+    RandomResizedCrop scale (0.25, 1.0) ratio (0.75, 1.33) over the full frame | h-flip p=0.5
+    Colour jitter (0.3, 0.3, 0.3, 0.05) | grayscale p=0.1 | erasing p=0.25 (0.02, 0.2)
+    Temporal: 8 segments over the whole clip, random frame inside each segment
+  EVALUATION:
+    Validation (model selection): 2 clips x 3 full-width crops, raw + EMA weights
+    Test (once, at the end):      4 clips x 3 full-width crops
+    Precision: float32 (AMP=False)
+======================================================================
+
+  DATASET (from /home/y_rajeshwar/vlil_40/v4_crime_fixed/splits):
+  Class               Train    Val   Test
+  Dragging               46      8     14
+  Hitting                46      8     14
+  Kicking                40      7      9
+  Pushing                43      8     13
+  abuse                  39      7     11
+  hair pulling           41      7     12
+  neck grabbing          41      7     12
+  punch                  28      5      2
+  robbery                33      6      9
+  shooting               42      8     13
+  slap                   37      7     10
+  snatching              41      7     13
+  stabbing               50      9     15
+  TOTAL                 527     94    147
+  [CHECK] gnConv per-frame isolation: OK (change in frame 3 -> max output change: frame 3 = 0.00599, other frames = 0)
+  [CHECK] cls token untouched: forward scan OK, backward scan OK
+Use checkpoint: False
+Checkpoint number: 0
+
+  Loading UCF-101 checkpoint: /home/y_rajeshwar/vlil_40/v1_ucf101/checkpoints_ucf101/best_ucf101_v6.pth
+  Loaded 414 tensors | skipped: 1152 gnConv (old reshape) + 2 head (101 classes)
+  Missing (expected: new gnConv layers 16-23 + new head): 354 | unexpected: 0
+
+  ==================================================================
+  MODEL PARAMETER BREAKDOWN (V4 / train_crime_v9)
+  ------------------------------------------------------------------
+  Component                         Total    Trainable       Frozen
+  ------------------------------------------------------------------
+  Patch Embedding                 374,400            0      374,400
+  Mamba SSM Layers             25,030,656    8,343,552   16,687,104
+  gnConv2D Modules (L16-23)    90,817,536   90,817,536            0
+  Classification Head               5,005        5,005            0
+  Norm Layers                       9,600        3,456        6,144
+  ------------------------------------------------------------------
+  TOTAL (active)              116,237,197   99,169,549   17,067,648
+                                   (100%)      (85.3%)      (14.7%)
+  ------------------------------------------------------------------
+  Removed: gnConv2D in frozen layers 0-15: 181,635,072 params
+           (zero-init + frozen in V1-V3, so they always output exactly 0)
+  V1-V3 total incl. those inactive modules: 297,872,269
+  One gnConv2D module: 5,676,096 params (2 per layer: forward + backward scan)
+  ==================================================================
+
+  ==================================================================
+  COMPUTE PER VIDEO (8 x 224 x 224), measured
+  ------------------------------------------------------------------
+  Patch embedding (Conv3d)                      0.46 GMACs
+  Mamba linear projections                     37.94 GMACs
+  Mamba Conv1d                                  0.23 GMACs
+  Selective scan (estimate)                     4.16 GMACs
+  gnConv2D (layers 16-23)                     142.23 GMACs
+  Classification head                           0.00 GMACs
+  ------------------------------------------------------------------
+  TOTAL                                       185.03 GMACs  (= 370.1 GFLOPs)
+  Removed inactive gnConv (layers 0-15) would have added 284.5 GMACs for an output of exactly 0
+  (V1-V3 banner said '~56 GFLOPs'; that number was typed in, not measured)
+  Inference latency (batch 1, fp32, this V100, shared GPU): 58 ms / video
+  ==================================================================
+
+  Optimizer groups:
+    backbone              8,110,080 params | lr 1e-05 | wd 0.05
+    backbone_no_decay       236,928 params | lr 1e-05 | wd 0.0
+    gnconv               90,709,248 params | lr 1e-04 | wd 0.05
+    gnconv_no_decay         108,288 params | lr 1e-04 | wd 0.0
+    head                      4,992 params | lr 1e-03 | wd 0.05
+    head_no_decay                13 params | lr 1e-03 | wd 0.0
+
+  Training: 263 batches/epoch, validation on 94 videos
+  [CHECK] first training step OK (loss 2.723, GPU memory 5.5 GB)
+    epoch 1 [train]  25% | loss 2.5842 | acc 11.0% | 26s
+    epoch 1 [train]  49% | loss 2.5874 | acc 11.5% | 45s
+    epoch 1 [train]  74% | loss 2.5873 | acc 11.3% | 65s
+    epoch 1 [train]  99% | loss 2.5696 | acc 12.1% | 85s
+    epoch 1 [train] 100% | loss 2.5701 | acc 11.9% | 86s
+  Epoch  1/40: loss 2.5701 | train 11.9% | val raw 18.1% (loss 2.436) | val EMA 18.1% (loss 2.450) | gap -6.2% | lr 3.3e-06/3.3e-05/3.3e-04 | 140s
+    val per class (raw): Dragging 12% | Hitting 12% | Kicking 71% | Pushing 12% | abuse 14% | hair pulli 0% | neck grabb 29% | punch 0% | robbery 0% | shooting 50% | slap 14% | snatching 14% | stabbing 0%
+    >>> NEW BEST: 18.09% (raw weights) -> /home/y_rajeshwar/vlil_40/v4_crime_fixed/checkpoints/best_model_v9.pth
+    peak GPU memory: 6.0 GB
+    epoch 2 [train]  25% | loss 2.4405 | acc 19.3% | 20s
+    epoch 2 [train]  49% | loss 2.4397 | acc 21.3% | 40s
+    epoch 2 [train]  74% | loss 2.4159 | acc 25.0% | 59s
+    epoch 2 [train]  99% | loss 2.3997 | acc 24.9% | 79s
+    epoch 2 [train] 100% | loss 2.4001 | acc 24.8% | 80s
+  Epoch  2/40: loss 2.4001 | train 24.8% | val raw 38.3% (loss 2.175) | val EMA 39.4% (loss 2.227) | gap -14.6% | lr 6.7e-06/6.7e-05/6.7e-04 | 133s
+    val per class (ema): Dragging 12% | Hitting 25% | Kicking 71% | Pushing 38% | abuse 43% | hair pulli 43% | neck grabb 57% | punch 20% | robbery 17% | shooting 100% | slap 14% | snatching 14% | stabbing 44%
+    >>> NEW BEST: 39.36% (ema weights) -> /home/y_rajeshwar/vlil_40/v4_crime_fixed/checkpoints/best_model_v9.pth
+    epoch 3 [train]  25% | loss 2.2506 | acc 35.9% | 20s
+    epoch 3 [train]  49% | loss 2.1907 | acc 38.3% | 40s
+    epoch 3 [train]  74% | loss 2.1847 | acc 37.3% | 59s
+    epoch 3 [train]  99% | loss 2.1477 | acc 39.1% | 79s
+    epoch 3 [train] 100% | loss 2.1477 | acc 39.0% | 80s
+  Epoch  3/40: loss 2.1477 | train 39.0% | val raw 47.9% (loss 1.779) | val EMA 46.8% (loss 1.826) | gap -8.8% | lr 1.0e-05/1.0e-04/1.0e-03 | 133s
+    val per class (raw): Dragging 50% | Hitting 0% | Kicking 86% | Pushing 62% | abuse 14% | hair pulli 43% | neck grabb 57% | punch 40% | robbery 67% | shooting 88% | slap 71% | snatching 0% | stabbing 44%
+    >>> NEW BEST: 47.87% (raw weights) -> /home/y_rajeshwar/vlil_40/v4_crime_fixed/checkpoints/best_model_v9.pth
+    epoch 4 [train]  25% | loss 1.9420 | acc 45.4% | 20s
+    epoch 4 [train]  49% | loss 1.9870 | acc 44.0% | 40s
+    epoch 4 [train]  74% | loss 1.9858 | acc 44.3% | 59s
+    epoch 4 [train]  99% | loss 1.9639 | acc 45.3% | 79s
+    epoch 4 [train] 100% | loss 1.9629 | acc 45.4% | 80s
+  Epoch  4/40: loss 1.9629 | train 45.4% | val raw 54.3% (loss 1.545) | val EMA 52.1% (loss 1.590) | gap -8.9% | lr 1.0e-05/1.0e-04/1.0e-03 | 133s
+    val per class (raw): Dragging 25% | Hitting 38% | Kicking 100% | Pushing 75% | abuse 29% | hair pulli 43% | neck grabb 43% | punch 40% | robbery 67% | shooting 100% | slap 86% | snatching 14% | stabbing 44%
+    >>> NEW BEST: 54.26% (raw weights) -> /home/y_rajeshwar/vlil_40/v4_crime_fixed/checkpoints/best_model_v9.pth
+    epoch 5 [train]  25% | loss 1.7534 | acc 56.3% | 20s
+    epoch 5 [train]  49% | loss 1.7668 | acc 54.4% | 40s
+    epoch 5 [train]  74% | loss 1.7481 | acc 52.9% | 59s
+    epoch 5 [train]  99% | loss 1.7364 | acc 53.9% | 79s
+    epoch 5 [train] 100% | loss 1.7363 | acc 53.9% | 80s
+  Epoch  5/40: loss 1.7363 | train 53.9% | val raw 52.1% (loss 1.411) | val EMA 52.1% (loss 1.452) | gap 1.8% | lr 1.0e-05/1.0e-04/1.0e-03 | 128s
+    val per class (raw): Dragging 25% | Hitting 38% | Kicking 86% | Pushing 75% | abuse 29% | hair pulli 43% | neck grabb 57% | punch 20% | robbery 50% | shooting 100% | slap 71% | snatching 14% | stabbing 56%
+    (no improvement 1/10; best 54.26% at epoch 4)
+    epoch 6 [train]  25% | loss 1.8534 | acc 48.5% | 20s
+    epoch 6 [train]  49% | loss 1.7611 | acc 51.8% | 40s
+    epoch 6 [train]  74% | loss 1.6988 | acc 54.8% | 59s
+    epoch 6 [train]  99% | loss 1.6978 | acc 55.1% | 79s
+    epoch 6 [train] 100% | loss 1.6931 | acc 55.4% | 80s
+  Epoch  6/40: loss 1.6931 | train 55.4% | val raw 57.4% (loss 1.327) | val EMA 56.4% (loss 1.361) | gap -2.0% | lr 9.9e-06/9.9e-05/9.9e-04 | 133s
+    val per class (raw): Dragging 25% | Hitting 50% | Kicking 86% | Pushing 75% | abuse 29% | hair pulli 71% | neck grabb 57% | punch 40% | robbery 50% | shooting 100% | slap 86% | snatching 14% | stabbing 56%
+    >>> NEW BEST: 57.45% (raw weights) -> /home/y_rajeshwar/vlil_40/v4_crime_fixed/checkpoints/best_model_v9.pth
+    epoch 7 [train]  25% | loss 1.7040 | acc 56.1% | 20s
+    epoch 7 [train]  49% | loss 1.6744 | acc 58.7% | 40s
+    epoch 7 [train]  74% | loss 1.6488 | acc 59.8% | 59s
+    epoch 7 [train]  99% | loss 1.6472 | acc 59.1% | 79s
+    epoch 7 [train] 100% | loss 1.6455 | acc 59.0% | 80s
+  Epoch  7/40: loss 1.6455 | train 59.0% | val raw 58.5% (loss 1.291) | val EMA 57.4% (loss 1.310) | gap 0.5% | lr 9.8e-06/9.8e-05/9.8e-04 | 133s
+    val per class (raw): Dragging 25% | Hitting 38% | Kicking 100% | Pushing 75% | abuse 29% | hair pulli 71% | neck grabb 57% | punch 40% | robbery 67% | shooting 100% | slap 86% | snatching 14% | stabbing 56%
+    >>> NEW BEST: 58.51% (raw weights) -> /home/y_rajeshwar/vlil_40/v4_crime_fixed/checkpoints/best_model_v9.pth
+    epoch 8 [train]  25% | loss 1.6435 | acc 60.6% | 20s
+    epoch 8 [train]  49% | loss 1.6114 | acc 59.8% | 40s
+    epoch 8 [train]  74% | loss 1.5834 | acc 59.9% | 59s
+    epoch 8 [train]  99% | loss 1.6128 | acc 58.0% | 79s
+    epoch 8 [train] 100% | loss 1.6113 | acc 58.2% | 80s
+  Epoch  8/40: loss 1.6113 | train 58.2% | val raw 61.7% (loss 1.264) | val EMA 58.5% (loss 1.243) | gap -3.5% | lr 9.7e-06/9.7e-05/9.7e-04 | 133s
+    val per class (raw): Dragging 38% | Hitting 38% | Kicking 100% | Pushing 75% | abuse 14% | hair pulli 57% | neck grabb 57% | punch 80% | robbery 67% | shooting 100% | slap 86% | snatching 14% | stabbing 78%
+    >>> NEW BEST: 61.70% (raw weights) -> /home/y_rajeshwar/vlil_40/v4_crime_fixed/checkpoints/best_model_v9.pth
+    epoch 9 [train]  25% | loss 1.5446 | acc 59.5% | 20s
+    epoch 9 [train]  49% | loss 1.5120 | acc 62.4% | 40s
+    epoch 9 [train]  74% | loss 1.5187 | acc 62.1% | 59s
+    epoch 9 [train]  99% | loss 1.5435 | acc 61.7% | 79s
+    epoch 9 [train] 100% | loss 1.5494 | acc 61.5% | 80s
+  Epoch  9/40: loss 1.5494 | train 61.5% | val raw 58.5% (loss 1.224) | val EMA 59.6% (loss 1.210) | gap 1.9% | lr 9.6e-06/9.6e-05/9.6e-04 | 128s
+    val per class (ema): Dragging 25% | Hitting 62% | Kicking 86% | Pushing 75% | abuse 29% | hair pulli 57% | neck grabb 57% | punch 60% | robbery 67% | shooting 100% | slap 86% | snatching 14% | stabbing 56%
+    (no improvement 1/10; best 61.70% at epoch 8)
+    epoch 10 [train]  25% | loss 1.4868 | acc 67.6% | 20s
+    epoch 10 [train]  49% | loss 1.4878 | acc 64.3% | 40s
+    epoch 10 [train]  74% | loss 1.4880 | acc 63.6% | 59s
+    epoch 10 [train]  99% | loss 1.4670 | acc 64.7% | 79s
+    epoch 10 [train] 100% | loss 1.4679 | acc 64.6% | 80s
+  Epoch 10/40: loss 1.4679 | train 64.6% | val raw 63.8% (loss 1.185) | val EMA 59.6% (loss 1.187) | gap 0.7% | lr 9.4e-06/9.4e-05/9.4e-04 | 133s
+    val per class (raw): Dragging 25% | Hitting 50% | Kicking 100% | Pushing 88% | abuse 43% | hair pulli 71% | neck grabb 57% | punch 40% | robbery 67% | shooting 100% | slap 86% | snatching 14% | stabbing 78%
+    >>> NEW BEST: 63.83% (raw weights) -> /home/y_rajeshwar/vlil_40/v4_crime_fixed/checkpoints/best_model_v9.pth
+    epoch 11 [train]  25% | loss 1.4654 | acc 66.5% | 20s
+    epoch 11 [train]  49% | loss 1.4600 | acc 66.4% | 40s
+    epoch 11 [train]  74% | loss 1.4527 | acc 65.4% | 59s
+    epoch 11 [train]  99% | loss 1.4898 | acc 63.9% | 79s
+    epoch 11 [train] 100% | loss 1.4896 | acc 63.7% | 80s
+  Epoch 11/40: loss 1.4896 | train 63.7% | val raw 59.6% (loss 1.184) | val EMA 62.8% (loss 1.175) | gap 1.0% | lr 9.1e-06/9.1e-05/9.1e-04 | 128s
+    val per class (ema): Dragging 25% | Hitting 50% | Kicking 86% | Pushing 75% | abuse 43% | hair pulli 71% | neck grabb 57% | punch 60% | robbery 67% | shooting 100% | slap 86% | snatching 14% | stabbing 78%
+    (no improvement 1/10; best 63.83% at epoch 10)
+    epoch 12 [train]  25% | loss 1.3646 | acc 68.2% | 20s
+    epoch 12 [train]  49% | loss 1.3738 | acc 69.7% | 40s
+    epoch 12 [train]  74% | loss 1.4175 | acc 67.9% | 59s
+    epoch 12 [train]  99% | loss 1.4294 | acc 67.5% | 79s
+    epoch 12 [train] 100% | loss 1.4281 | acc 67.6% | 80s
+  Epoch 12/40: loss 1.4281 | train 67.6% | val raw 64.9% (loss 1.147) | val EMA 62.8% (loss 1.153) | gap 2.7% | lr 8.9e-06/8.9e-05/8.9e-04 | 133s
+    val per class (raw): Dragging 38% | Hitting 75% | Kicking 86% | Pushing 75% | abuse 43% | hair pulli 57% | neck grabb 71% | punch 40% | robbery 50% | shooting 100% | slap 100% | snatching 14% | stabbing 78%
+    >>> NEW BEST: 64.89% (raw weights) -> /home/y_rajeshwar/vlil_40/v4_crime_fixed/checkpoints/best_model_v9.pth
+    epoch 13 [train]  25% | loss 1.4897 | acc 64.0% | 20s
+    epoch 13 [train]  49% | loss 1.4488 | acc 65.8% | 40s
+    epoch 13 [train]  74% | loss 1.4210 | acc 67.0% | 59s
+    epoch 13 [train]  99% | loss 1.4398 | acc 66.6% | 79s
+    epoch 13 [train] 100% | loss 1.4424 | acc 66.4% | 80s
+  Epoch 13/40: loss 1.4424 | train 66.4% | val raw 61.7% (loss 1.103) | val EMA 61.7% (loss 1.127) | gap 4.7% | lr 8.6e-06/8.6e-05/8.6e-04 | 128s
+    val per class (raw): Dragging 25% | Hitting 50% | Kicking 100% | Pushing 75% | abuse 29% | hair pulli 57% | neck grabb 71% | punch 60% | robbery 50% | shooting 100% | slap 86% | snatching 14% | stabbing 78%
+    (no improvement 1/10; best 64.89% at epoch 12)
+    epoch 14 [train]  25% | loss 1.4810 | acc 70.3% | 20s
+    epoch 14 [train]  49% | loss 1.4250 | acc 68.5% | 40s
+    epoch 14 [train]  74% | loss 1.3920 | acc 68.7% | 59s
+    epoch 14 [train]  99% | loss 1.4114 | acc 67.6% | 79s
+    epoch 14 [train] 100% | loss 1.4100 | acc 67.7% | 80s
+  Epoch 14/40: loss 1.4100 | train 67.7% | val raw 66.0% (loss 1.103) | val EMA 61.7% (loss 1.112) | gap 1.8% | lr 8.3e-06/8.3e-05/8.3e-04 | 133s
+    val per class (raw): Dragging 25% | Hitting 62% | Kicking 86% | Pushing 75% | abuse 43% | hair pulli 86% | neck grabb 71% | punch 40% | robbery 67% | shooting 100% | slap 100% | snatching 14% | stabbing 78%
+    >>> NEW BEST: 65.96% (raw weights) -> /home/y_rajeshwar/vlil_40/v4_crime_fixed/checkpoints/best_model_v9.pth
+    epoch 15 [train]  25% | loss 1.2752 | acc 71.6% | 20s
+    epoch 15 [train]  49% | loss 1.3336 | acc 71.4% | 40s
+    epoch 15 [train]  74% | loss 1.3489 | acc 71.4% | 59s
+    epoch 15 [train]  99% | loss 1.3489 | acc 70.5% | 79s
+    epoch 15 [train] 100% | loss 1.3453 | acc 70.6% | 80s
+  Epoch 15/40: loss 1.3453 | train 70.6% | val raw 63.8% (loss 1.110) | val EMA 62.8% (loss 1.092) | gap 6.8% | lr 8.0e-06/8.0e-05/8.0e-04 | 128s
+    val per class (raw): Dragging 38% | Hitting 62% | Kicking 86% | Pushing 75% | abuse 29% | hair pulli 43% | neck grabb 71% | punch 40% | robbery 67% | shooting 100% | slap 100% | snatching 29% | stabbing 78%
+    (no improvement 1/10; best 65.96% at epoch 14)
+    epoch 16 [train]  25% | loss 1.4224 | acc 67.2% | 20s
+    epoch 16 [train]  49% | loss 1.4229 | acc 65.1% | 40s
+    epoch 16 [train]  74% | loss 1.4305 | acc 66.0% | 59s
+    epoch 16 [train]  99% | loss 1.4342 | acc 65.6% | 79s
+    epoch 16 [train] 100% | loss 1.4390 | acc 65.2% | 80s
+  Epoch 16/40: loss 1.4390 | train 65.2% | val raw 66.0% (loss 1.093) | val EMA 64.9% (loss 1.086) | gap -0.8% | lr 7.6e-06/7.6e-05/7.6e-04 | 133s
+    val per class (raw): Dragging 38% | Hitting 38% | Kicking 86% | Pushing 88% | abuse 29% | hair pulli 86% | neck grabb 71% | punch 40% | robbery 67% | shooting 100% | slap 100% | snatching 14% | stabbing 89%
+    >>> NEW BEST: 65.96% (raw weights) -> /home/y_rajeshwar/vlil_40/v4_crime_fixed/checkpoints/best_model_v9.pth
+    epoch 17 [train]  25% | loss 1.3897 | acc 71.9% | 20s
+    epoch 17 [train]  49% | loss 1.3872 | acc 70.9% | 40s
+    epoch 17 [train]  74% | loss 1.4125 | acc 69.4% | 59s
+    epoch 17 [train]  99% | loss 1.4247 | acc 68.3% | 79s
+    epoch 17 [train] 100% | loss 1.4272 | acc 68.2% | 80s
+  Epoch 17/40: loss 1.4272 | train 68.2% | val raw 63.8% (loss 1.110) | val EMA 64.9% (loss 1.086) | gap 3.3% | lr 7.3e-06/7.3e-05/7.3e-04 | 128s
+    val per class (ema): Dragging 25% | Hitting 50% | Kicking 86% | Pushing 88% | abuse 43% | hair pulli 71% | neck grabb 71% | punch 40% | robbery 67% | shooting 100% | slap 100% | snatching 14% | stabbing 78%
+    (no improvement 1/10; best 65.96% at epoch 16)
+    epoch 18 [train]  25% | loss 1.3340 | acc 71.8% | 20s
+    epoch 18 [train]  49% | loss 1.3617 | acc 69.1% | 40s
+    epoch 18 [train]  74% | loss 1.3886 | acc 68.5% | 59s
+    epoch 18 [train]  99% | loss 1.3698 | acc 69.8% | 79s
+    epoch 18 [train] 100% | loss 1.3695 | acc 69.9% | 80s
+  Epoch 18/40: loss 1.3695 | train 69.9% | val raw 67.0% (loss 1.087) | val EMA 63.8% (loss 1.085) | gap 2.8% | lr 6.9e-06/6.9e-05/6.9e-04 | 133s
+    val per class (raw): Dragging 25% | Hitting 62% | Kicking 100% | Pushing 75% | abuse 43% | hair pulli 57% | neck grabb 71% | punch 80% | robbery 67% | shooting 100% | slap 86% | snatching 14% | stabbing 89%
+    >>> NEW BEST: 67.02% (raw weights) -> /home/y_rajeshwar/vlil_40/v4_crime_fixed/checkpoints/best_model_v9.pth
+    epoch 19 [train]  25% | loss 1.3973 | acc 71.4% | 20s
+    epoch 19 [train]  49% | loss 1.4154 | acc 68.8% | 40s
+    epoch 19 [train]  74% | loss 1.4180 | acc 67.5% | 59s
+    epoch 19 [train]  99% | loss 1.4131 | acc 68.8% | 79s
+    epoch 19 [train] 100% | loss 1.4150 | acc 68.8% | 80s
+  Epoch 19/40: loss 1.4150 | train 68.8% | val raw 63.8% (loss 1.089) | val EMA 64.9% (loss 1.074) | gap 3.9% | lr 6.5e-06/6.5e-05/6.5e-04 | 128s
+    val per class (ema): Dragging 25% | Hitting 62% | Kicking 86% | Pushing 75% | abuse 43% | hair pulli 71% | neck grabb 71% | punch 40% | robbery 67% | shooting 100% | slap 100% | snatching 14% | stabbing 78%
+    (no improvement 1/10; best 67.02% at epoch 18)
+    epoch 20 [train]  25% | loss 1.3561 | acc 71.0% | 20s
+    epoch 20 [train]  49% | loss 1.3558 | acc 70.5% | 40s
+    epoch 20 [train]  74% | loss 1.3207 | acc 72.0% | 59s
+    epoch 20 [train]  99% | loss 1.3284 | acc 71.9% | 79s
+    epoch 20 [train] 100% | loss 1.3319 | acc 71.5% | 80s
+  Epoch 20/40: loss 1.3319 | train 71.5% | val raw 64.9% (loss 1.076) | val EMA 66.0% (loss 1.069) | gap 5.6% | lr 6.1e-06/6.1e-05/6.1e-04 | 128s
+    val per class (ema): Dragging 25% | Hitting 62% | Kicking 86% | Pushing 75% | abuse 43% | hair pulli 71% | neck grabb 71% | punch 40% | robbery 67% | shooting 100% | slap 100% | snatching 29% | stabbing 78%
+    (no improvement 2/10; best 67.02% at epoch 18)
+    epoch 21 [train]  25% | loss 1.3346 | acc 71.2% | 20s
+    epoch 21 [train]  49% | loss 1.3483 | acc 71.0% | 40s
+    epoch 21 [train]  74% | loss 1.3138 | acc 73.4% | 59s
+    epoch 21 [train]  99% | loss 1.3130 | acc 73.8% | 79s
+    epoch 21 [train] 100% | loss 1.3119 | acc 73.8% | 80s
+  Epoch 21/40: loss 1.3119 | train 73.8% | val raw 66.0% (loss 1.047) | val EMA 66.0% (loss 1.056) | gap 7.9% | lr 5.6e-06/5.6e-05/5.6e-04 | 128s
+    val per class (raw): Dragging 25% | Hitting 62% | Kicking 86% | Pushing 75% | abuse 43% | hair pulli 71% | neck grabb 71% | punch 40% | robbery 50% | shooting 100% | slap 100% | snatching 29% | stabbing 89%
+    (no improvement 3/10; best 67.02% at epoch 18)
+    epoch 22 [train]  25% | loss 1.3669 | acc 70.7% | 20s
+    epoch 22 [train]  49% | loss 1.2862 | acc 74.9% | 40s
+    epoch 22 [train]  74% | loss 1.2804 | acc 73.3% | 59s
+    epoch 22 [train]  99% | loss 1.3108 | acc 72.6% | 79s
+    epoch 22 [train] 100% | loss 1.3172 | acc 72.5% | 80s
+  Epoch 22/40: loss 1.3172 | train 72.5% | val raw 67.0% (loss 1.052) | val EMA 64.9% (loss 1.044) | gap 5.5% | lr 5.2e-06/5.2e-05/5.2e-04 | 133s
+    val per class (raw): Dragging 25% | Hitting 75% | Kicking 86% | Pushing 88% | abuse 57% | hair pulli 71% | neck grabb 71% | punch 40% | robbery 67% | shooting 100% | slap 100% | snatching 14% | stabbing 67%
+    >>> NEW BEST: 67.02% (raw weights) -> /home/y_rajeshwar/vlil_40/v4_crime_fixed/checkpoints/best_model_v9.pth
+    epoch 23 [train]  25% | loss 1.2965 | acc 73.7% | 20s
+    epoch 23 [train]  49% | loss 1.3199 | acc 73.2% | 40s
+    epoch 23 [train]  74% | loss 1.2707 | acc 75.7% | 59s
+    epoch 23 [train]  99% | loss 1.2841 | acc 74.8% | 79s
+    epoch 23 [train] 100% | loss 1.2835 | acc 74.6% | 80s
+  Epoch 23/40: loss 1.2835 | train 74.6% | val raw 68.1% (loss 1.007) | val EMA 66.0% (loss 1.037) | gap 6.6% | lr 4.8e-06/4.8e-05/4.8e-04 | 133s
+    val per class (raw): Dragging 25% | Hitting 75% | Kicking 86% | Pushing 88% | abuse 57% | hair pulli 57% | neck grabb 71% | punch 60% | robbery 50% | shooting 100% | slap 100% | snatching 29% | stabbing 78%
+    >>> NEW BEST: 68.09% (raw weights) -> /home/y_rajeshwar/vlil_40/v4_crime_fixed/checkpoints/best_model_v9.pth
+    epoch 24 [train]  25% | loss 1.3414 | acc 73.3% | 20s
+    epoch 24 [train]  49% | loss 1.2796 | acc 75.6% | 40s
+    epoch 24 [train]  74% | loss 1.2988 | acc 75.1% | 59s
+    epoch 24 [train]  99% | loss 1.2713 | acc 75.7% | 79s
+    epoch 24 [train] 100% | loss 1.2756 | acc 75.5% | 80s
+  Epoch 24/40: loss 1.2756 | train 75.5% | val raw 69.1% (loss 1.020) | val EMA 67.0% (loss 1.020) | gap 6.3% | lr 4.4e-06/4.4e-05/4.4e-04 | 133s
+    val per class (raw): Dragging 25% | Hitting 62% | Kicking 100% | Pushing 88% | abuse 57% | hair pulli 71% | neck grabb 71% | punch 40% | robbery 50% | shooting 100% | slap 100% | snatching 43% | stabbing 78%
+    >>> NEW BEST: 69.15% (raw weights) -> /home/y_rajeshwar/vlil_40/v4_crime_fixed/checkpoints/best_model_v9.pth
+    epoch 25 [train]  25% | loss 1.3219 | acc 73.4% | 20s
+    epoch 25 [train]  49% | loss 1.3056 | acc 74.8% | 40s
+    epoch 25 [train]  74% | loss 1.2819 | acc 74.9% | 59s
+    epoch 25 [train]  99% | loss 1.2930 | acc 74.1% | 79s
+    epoch 25 [train] 100% | loss 1.2973 | acc 74.0% | 80s
+  Epoch 25/40: loss 1.2973 | train 74.0% | val raw 71.3% (loss 1.032) | val EMA 67.0% (loss 1.015) | gap 2.7% | lr 3.9e-06/3.9e-05/3.9e-04 | 133s
+    val per class (raw): Dragging 38% | Hitting 62% | Kicking 100% | Pushing 88% | abuse 57% | hair pulli 71% | neck grabb 71% | punch 40% | robbery 67% | shooting 100% | slap 100% | snatching 43% | stabbing 78%
+    >>> NEW BEST: 71.28% (raw weights) -> /home/y_rajeshwar/vlil_40/v4_crime_fixed/checkpoints/best_model_v9.pth
+    epoch 26 [train]  25% | loss 1.3131 | acc 70.0% | 20s
+    epoch 26 [train]  49% | loss 1.2700 | acc 75.4% | 40s
+    epoch 26 [train]  74% | loss 1.2803 | acc 75.6% | 59s
+    epoch 26 [train]  99% | loss 1.3068 | acc 74.0% | 79s
+    epoch 26 [train] 100% | loss 1.3071 | acc 73.9% | 80s
+  Epoch 26/40: loss 1.3071 | train 73.9% | val raw 70.2% (loss 1.048) | val EMA 69.1% (loss 1.015) | gap 3.7% | lr 3.5e-06/3.5e-05/3.5e-04 | 129s
+    val per class (raw): Dragging 25% | Hitting 62% | Kicking 100% | Pushing 75% | abuse 57% | hair pulli 71% | neck grabb 71% | punch 40% | robbery 67% | shooting 100% | slap 100% | snatching 43% | stabbing 89%
+    (no improvement 1/10; best 71.28% at epoch 25)
+    epoch 27 [train]  25% | loss 1.2295 | acc 76.4% | 20s
+    epoch 27 [train]  49% | loss 1.2306 | acc 77.2% | 40s
+    epoch 27 [train]  74% | loss 1.2578 | acc 75.6% | 60s
+    epoch 27 [train]  99% | loss 1.2621 | acc 75.5% | 79s
+    epoch 27 [train] 100% | loss 1.2624 | acc 75.4% | 80s
+  Epoch 27/40: loss 1.2624 | train 75.4% | val raw 71.3% (loss 1.037) | val EMA 69.1% (loss 1.014) | gap 4.1% | lr 3.1e-06/3.1e-05/3.1e-04 | 129s
+    val per class (raw): Dragging 38% | Hitting 62% | Kicking 100% | Pushing 88% | abuse 57% | hair pulli 57% | neck grabb 86% | punch 40% | robbery 67% | shooting 100% | slap 100% | snatching 43% | stabbing 78%
+    (no improvement 2/10; best 71.28% at epoch 25)
+    epoch 28 [train]  25% | loss 1.1616 | acc 79.1% | 20s
+    epoch 28 [train]  49% | loss 1.2074 | acc 78.4% | 40s
+    epoch 28 [train]  74% | loss 1.2499 | acc 76.0% | 59s
+    epoch 28 [train]  99% | loss 1.2626 | acc 75.1% | 79s
+    epoch 28 [train] 100% | loss 1.2640 | acc 75.3% | 80s
+  Epoch 28/40: loss 1.2640 | train 75.3% | val raw 68.1% (loss 1.028) | val EMA 71.3% (loss 1.012) | gap 4.0% | lr 2.7e-06/2.7e-05/2.7e-04 | 133s
+    val per class (ema): Dragging 25% | Hitting 62% | Kicking 100% | Pushing 88% | abuse 57% | hair pulli 71% | neck grabb 86% | punch 40% | robbery 67% | shooting 100% | slap 100% | snatching 43% | stabbing 78%
+    >>> NEW BEST: 71.28% (ema weights) -> /home/y_rajeshwar/vlil_40/v4_crime_fixed/checkpoints/best_model_v9.pth
+    epoch 29 [train]  25% | loss 1.1950 | acc 81.2% | 20s
+    epoch 29 [train]  49% | loss 1.2312 | acc 78.3% | 40s
+    epoch 29 [train]  74% | loss 1.2490 | acc 77.5% | 60s
+    epoch 29 [train]  99% | loss 1.2658 | acc 76.3% | 79s
+    epoch 29 [train] 100% | loss 1.2644 | acc 76.2% | 80s
+  Epoch 29/40: loss 1.2644 | train 76.2% | val raw 69.1% (loss 1.002) | val EMA 71.3% (loss 1.009) | gap 5.0% | lr 2.4e-06/2.4e-05/2.4e-04 | 133s
+    val per class (ema): Dragging 25% | Hitting 62% | Kicking 100% | Pushing 88% | abuse 57% | hair pulli 71% | neck grabb 86% | punch 40% | robbery 67% | shooting 100% | slap 100% | snatching 43% | stabbing 78%
+    >>> NEW BEST: 71.28% (ema weights) -> /home/y_rajeshwar/vlil_40/v4_crime_fixed/checkpoints/best_model_v9.pth
+    epoch 30 [train]  25% | loss 1.3086 | acc 71.9% | 20s
+    epoch 30 [train]  49% | loss 1.2471 | acc 73.2% | 40s
+    epoch 30 [train]  74% | loss 1.2875 | acc 71.9% | 59s
+    epoch 30 [train]  99% | loss 1.3136 | acc 71.5% | 79s
+    epoch 30 [train] 100% | loss 1.3147 | acc 71.4% | 80s
+  Epoch 30/40: loss 1.3147 | train 71.4% | val raw 70.2% (loss 1.005) | val EMA 71.3% (loss 1.006) | gap 0.1% | lr 2.0e-06/2.0e-05/2.0e-04 | 133s
+    val per class (ema): Dragging 25% | Hitting 62% | Kicking 100% | Pushing 88% | abuse 57% | hair pulli 71% | neck grabb 86% | punch 40% | robbery 67% | shooting 100% | slap 100% | snatching 43% | stabbing 78%
+    >>> NEW BEST: 71.28% (ema weights) -> /home/y_rajeshwar/vlil_40/v4_crime_fixed/checkpoints/best_model_v9.pth
+    epoch 31 [train]  25% | loss 1.1690 | acc 78.7% | 20s
+    epoch 31 [train]  49% | loss 1.2650 | acc 74.4% | 40s
+    epoch 31 [train]  74% | loss 1.2670 | acc 75.8% | 59s
+    epoch 31 [train]  99% | loss 1.2562 | acc 76.5% | 79s
+    epoch 31 [train] 100% | loss 1.2570 | acc 76.4% | 80s
+  Epoch 31/40: loss 1.2570 | train 76.4% | val raw 71.3% (loss 1.013) | val EMA 70.2% (loss 1.003) | gap 5.1% | lr 1.7e-06/1.7e-05/1.7e-04 | 128s
+    val per class (raw): Dragging 38% | Hitting 62% | Kicking 86% | Pushing 88% | abuse 57% | hair pulli 57% | neck grabb 86% | punch 40% | robbery 67% | shooting 100% | slap 100% | snatching 43% | stabbing 89%
+    (no improvement 1/10; best 71.28% at epoch 30)
+    epoch 32 [train]  25% | loss 1.2088 | acc 78.3% | 20s
+    epoch 32 [train]  49% | loss 1.2740 | acc 75.4% | 40s
+    epoch 32 [train]  74% | loss 1.2388 | acc 77.6% | 59s
+    epoch 32 [train]  99% | loss 1.2615 | acc 76.1% | 79s
+    epoch 32 [train] 100% | loss 1.2601 | acc 76.1% | 80s
+  Epoch 32/40: loss 1.2601 | train 76.1% | val raw 72.3% (loss 1.020) | val EMA 70.2% (loss 1.003) | gap 3.8% | lr 1.4e-06/1.4e-05/1.4e-04 | 133s
+    val per class (raw): Dragging 38% | Hitting 62% | Kicking 100% | Pushing 88% | abuse 57% | hair pulli 57% | neck grabb 86% | punch 40% | robbery 67% | shooting 100% | slap 100% | snatching 43% | stabbing 89%
+    >>> NEW BEST: 72.34% (raw weights) -> /home/y_rajeshwar/vlil_40/v4_crime_fixed/checkpoints/best_model_v9.pth
+    epoch 33 [train]  25% | loss 1.3306 | acc 71.5% | 20s
+    epoch 33 [train]  49% | loss 1.2029 | acc 77.4% | 40s
+    epoch 33 [train]  74% | loss 1.2109 | acc 76.5% | 59s
+    epoch 33 [train]  99% | loss 1.1928 | acc 76.6% | 79s
+    epoch 33 [train] 100% | loss 1.1911 | acc 76.6% | 80s
+  Epoch 33/40: loss 1.1911 | train 76.6% | val raw 71.3% (loss 0.998) | val EMA 71.3% (loss 1.003) | gap 5.3% | lr 1.1e-06/1.1e-05/1.1e-04 | 128s
+    val per class (raw): Dragging 38% | Hitting 50% | Kicking 100% | Pushing 88% | abuse 57% | hair pulli 57% | neck grabb 86% | punch 40% | robbery 67% | shooting 100% | slap 100% | snatching 43% | stabbing 89%
+    (no improvement 1/10; best 72.34% at epoch 32)
+    epoch 34 [train]  25% | loss 1.2767 | acc 75.0% | 20s
+    epoch 34 [train]  49% | loss 1.2937 | acc 73.2% | 40s
+    epoch 34 [train]  74% | loss 1.2608 | acc 74.6% | 59s
+    epoch 34 [train]  99% | loss 1.2689 | acc 74.6% | 79s
+    epoch 34 [train] 100% | loss 1.2641 | acc 74.9% | 80s
+  Epoch 34/40: loss 1.2641 | train 74.9% | val raw 70.2% (loss 1.008) | val EMA 71.3% (loss 1.001) | gap 3.6% | lr 8.6e-07/8.6e-06/8.6e-05 | 129s
+    val per class (ema): Dragging 38% | Hitting 62% | Kicking 100% | Pushing 88% | abuse 57% | hair pulli 57% | neck grabb 86% | punch 40% | robbery 67% | shooting 100% | slap 100% | snatching 43% | stabbing 78%
+    (no improvement 2/10; best 72.34% at epoch 32)
+    epoch 35 [train]  25% | loss 1.1379 | acc 80.8% | 20s
+    epoch 35 [train]  49% | loss 1.1662 | acc 79.5% | 40s
+    epoch 35 [train]  74% | loss 1.2244 | acc 75.8% | 59s
+    epoch 35 [train]  99% | loss 1.1946 | acc 78.4% | 79s
+    epoch 35 [train] 100% | loss 1.1958 | acc 78.4% | 80s
+  Epoch 35/40: loss 1.1958 | train 78.4% | val raw 70.2% (loss 1.003) | val EMA 72.3% (loss 1.002) | gap 6.0% | lr 6.3e-07/6.3e-06/6.3e-05 | 138s
+    val per class (ema): Dragging 38% | Hitting 62% | Kicking 100% | Pushing 88% | abuse 57% | hair pulli 57% | neck grabb 86% | punch 40% | robbery 67% | shooting 100% | slap 100% | snatching 43% | stabbing 89%
+    >>> NEW BEST: 72.34% (ema weights) -> /home/y_rajeshwar/vlil_40/v4_crime_fixed/checkpoints/best_model_v9.pth
+    epoch 36 [train]  25% | loss 1.1634 | acc 79.3% | 20s
+    epoch 36 [train]  49% | loss 1.2419 | acc 76.0% | 40s
+    epoch 36 [train]  74% | loss 1.2208 | acc 77.5% | 59s
+    epoch 36 [train]  99% | loss 1.2265 | acc 77.0% | 79s
+    epoch 36 [train] 100% | loss 1.2255 | acc 77.0% | 80s
+  Epoch 36/40: loss 1.2255 | train 77.0% | val raw 72.3% (loss 1.009) | val EMA 72.3% (loss 1.003) | gap 4.6% | lr 4.4e-07/4.4e-06/4.4e-05 | 129s
+    val per class (ema): Dragging 38% | Hitting 62% | Kicking 100% | Pushing 88% | abuse 57% | hair pulli 57% | neck grabb 86% | punch 40% | robbery 67% | shooting 100% | slap 100% | snatching 43% | stabbing 89%
+    (no improvement 1/10; best 72.34% at epoch 35)
+    epoch 37 [train]  25% | loss 1.2115 | acc 73.8% | 20s
+    epoch 37 [train]  49% | loss 1.1937 | acc 76.6% | 40s
+    epoch 37 [train]  74% | loss 1.2475 | acc 74.7% | 59s
+    epoch 37 [train]  99% | loss 1.2484 | acc 75.3% | 79s
+    epoch 37 [train] 100% | loss 1.2419 | acc 75.6% | 80s
+  Epoch 37/40: loss 1.2419 | train 75.6% | val raw 70.2% (loss 1.011) | val EMA 72.3% (loss 1.004) | gap 3.3% | lr 2.9e-07/2.9e-06/2.9e-05 | 128s
+    val per class (ema): Dragging 38% | Hitting 62% | Kicking 100% | Pushing 88% | abuse 57% | hair pulli 57% | neck grabb 86% | punch 40% | robbery 67% | shooting 100% | slap 100% | snatching 43% | stabbing 89%
+    (no improvement 2/10; best 72.34% at epoch 35)
+    epoch 38 [train]  25% | loss 1.0950 | acc 83.2% | 20s
+    epoch 38 [train]  49% | loss 1.1403 | acc 82.4% | 40s
+    epoch 38 [train]  74% | loss 1.1884 | acc 79.6% | 59s
+    epoch 38 [train]  99% | loss 1.2033 | acc 79.3% | 79s
+    epoch 38 [train] 100% | loss 1.2054 | acc 79.2% | 80s
+  Epoch 38/40: loss 1.2054 | train 79.2% | val raw 72.3% (loss 1.010) | val EMA 72.3% (loss 1.005) | gap 6.9% | lr 1.6e-07/1.6e-06/1.6e-05 | 128s
+    val per class (ema): Dragging 38% | Hitting 62% | Kicking 100% | Pushing 88% | abuse 57% | hair pulli 57% | neck grabb 86% | punch 40% | robbery 67% | shooting 100% | slap 100% | snatching 43% | stabbing 89%
+    (no improvement 3/10; best 72.34% at epoch 35)
+    epoch 39 [train]  25% | loss 1.2363 | acc 79.1% | 20s
+    epoch 39 [train]  49% | loss 1.2260 | acc 77.1% | 40s
+    epoch 39 [train]  74% | loss 1.2431 | acc 76.8% | 59s
+    epoch 39 [train]  99% | loss 1.2259 | acc 77.2% | 79s
+    epoch 39 [train] 100% | loss 1.2255 | acc 77.1% | 80s
+  Epoch 39/40: loss 1.2255 | train 77.1% | val raw 71.3% (loss 1.012) | val EMA 72.3% (loss 1.005) | gap 4.8% | lr 1.0e-07/1.0e-06/1.0e-05 | 128s
+    val per class (ema): Dragging 38% | Hitting 62% | Kicking 100% | Pushing 88% | abuse 57% | hair pulli 57% | neck grabb 86% | punch 40% | robbery 67% | shooting 100% | slap 100% | snatching 43% | stabbing 89%
+    (no improvement 4/10; best 72.34% at epoch 35)
+    epoch 40 [train]  25% | loss 1.2432 | acc 77.2% | 20s
+    epoch 40 [train]  49% | loss 1.2280 | acc 76.3% | 40s
+    epoch 40 [train]  74% | loss 1.2396 | acc 75.9% | 59s
+    epoch 40 [train]  99% | loss 1.2496 | acc 76.0% | 79s
+    epoch 40 [train] 100% | loss 1.2503 | acc 75.9% | 80s
+  Epoch 40/40: loss 1.2503 | train 75.9% | val raw 71.3% (loss 1.004) | val EMA 71.3% (loss 1.006) | gap 4.6% | lr 1.0e-07/1.0e-06/1.0e-05 | 129s
+    val per class (raw): Dragging 38% | Hitting 50% | Kicking 100% | Pushing 88% | abuse 57% | hair pulli 57% | neck grabb 86% | punch 40% | robbery 67% | shooting 100% | slap 100% | snatching 43% | stabbing 89%
+    (no improvement 5/10; best 72.34% at epoch 35)
+
+======================================================================
+TRAINING COMPLETE
+  Best validation accuracy: 72.34% at epoch 35 (ema weights, train acc then 78.4%)
+  History: /home/y_rajeshwar/vlil_40/v4_crime_fixed/logs/history_v9.csv
+======================================================================
+
+  Evaluating on the TEST set (147 videos, 4 clips x 3 crops = 12 views per video)...
+
+======================================================================
+FINAL TEST RESULTS — V4 (train_crime_v9)
+======================================================================
+  Model used          : epoch 35 (ema weights), chosen on VALIDATION (val acc 72.34%)
+  TEST ACCURACY       : 73.47%   (4x3 views, main number)
+  Test acc, 1 view    : 70.75%   (centre clip, centre crop)
+  Test macro-F1       : 74.46%
+  Correct             : 108/147
+
+  Class              Correct   Recall  Precision      F1
+  punch               2/2      100.0%      66.7%   80.0%
+  shooting           12/13      92.3%      80.0%   85.7%
+  hair pulling       11/12      91.7%      84.6%   88.0%
+  Kicking             8/9       88.9%     100.0%   94.1%
+  slap                8/10      80.0%      66.7%   72.7%
+  stabbing           12/15      80.0%      85.7%   82.8%
+  robbery             7/9       77.8%      87.5%   82.4%
+  Pushing            10/13      76.9%      76.9%   76.9%
+  neck grabbing       9/12      75.0%      75.0%   75.0%
+  snatching           9/13      69.2%      69.2%   69.2%
+  abuse               6/11      54.5%      54.5%   54.5%
+  Dragging            7/14      50.0%      46.7%   48.3%
+  Hitting             7/14      50.0%      70.0%   58.3%
+
+  Confusion matrix (rows = true class, columns = predicted):
+                  Dragg Hitti Kicki Pushi abuse hair  neck  punch robbe shoot  slap snatc stabb
+  Dragging            7     3     0     0     1     0     1     0     0     0     1     1     0
+  Hitting             4     7     0     0     0     0     0     0     0     1     0     1     1
+  Kicking             1     0     8     0     0     0     0     0     0     0     0     0     0
+  Pushing             0     0     0    10     0     0     1     0     0     0     2     0     0
+  abuse               0     0     0     1     6     0     1     0     1     1     0     1     0
+  hair pulling        0     0     0     0     0    11     0     0     0     0     1     0     0
+  neck grabbing       1     0     0     0     1     0     9     0     0     1     0     0     0
+  punch               0     0     0     0     0     0     0     2     0     0     0     0     0
+  robbery             0     0     0     0     0     1     0     0     7     0     0     1     0
+  shooting            0     0     0     0     1     0     0     0     0    12     0     0     0
+  slap                1     0     0     0     0     1     0     0     0     0     8     0     0
+  snatching           1     0     0     1     1     0     0     0     0     0     0     9     1
+  stabbing            0     0     0     1     1     0     0     1     0     0     0     0    12
+
+  COMPARISON (note: V1/V3 picked their best epoch ON the test set, so they are optimistic):
+    V1 (K400 -> Violence)            : 69.64%
+    V3 (K400 -> UCF-101 -> Violence) : 71.43%
+    V4 (fixed backbone, this run)    : 73.47%  (single view 70.75%)
+======================================================================
+  Saved: /home/y_rajeshwar/vlil_40/v4_crime_fixed/results/ (test_results_v9.json, confusion_matrix_v9.csv, per_class_metrics_v9.csv, test_predictions_v9.csv)
+
+  Finished: 2026-10-11 18:23:19
+===== EXIT CODE 0 at Sun Oct 11 18:23:23 IST 2026 =====

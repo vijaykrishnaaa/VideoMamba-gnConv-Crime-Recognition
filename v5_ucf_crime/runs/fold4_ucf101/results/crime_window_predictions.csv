@@ -1,0 +1,15 @@
+video,crime_window,true,whole_video_pred,crime_window_pred
+/home/y_rajeshwar/final_year_project_29/ucf_dataset/Anomaly-Videos-Part-1/Anomaly-Videos-Part-1/Arrest/Arrest039_x264.mp4,7215-10335,Arrest,Normal,Normal
+/home/y_rajeshwar/final_year_project_29/ucf_dataset/Anomaly-Videos-Part-1/Anomaly-Videos-Part-1/Arson/Arson041_x264.mp4,2130-3615,Arson,Abuse,Abuse
+/home/y_rajeshwar/final_year_project_29/ucf_dataset/Anomaly-Videos-Part-2/Anomaly-Videos-Part-2/Burglary/Burglary037_x264.mp4,240-390;540-1800,Burglary,Burglary,Burglary
+/home/y_rajeshwar/final_year_project_29/ucf_dataset/Anomaly-Videos-Part-2/Anomaly-Videos-Part-2/Explosion/Explosion039_x264.mp4,60-150,Explosion,Arson,Arson
+/home/y_rajeshwar/final_year_project_29/ucf_dataset/Anomaly-Videos-Part-2/Anomaly-Videos-Part-2/Explosion/Explosion043_x264.mp4,4460-4600,Explosion,Assault,Assault
+/home/y_rajeshwar/final_year_project_29/ucf_dataset/Anomaly-Videos-Part-2/Anomaly-Videos-Part-2/Fighting/Fighting042_x264.mp4,290-1200,Fighting,Burglary,Burglary
+/home/y_rajeshwar/final_year_project_29/ucf_dataset/Anomaly-Videos-Part-2/Anomaly-Videos-Part-2/Fighting/Fighting047_x264.mp4,200-1830,Fighting,Fighting,Fighting
+/home/y_rajeshwar/final_year_project_29/ucf_dataset/Anomaly-Videos-Part-3/Anomaly-Videos-Part-3/Robbery/Robbery048_x264.mp4,450-930,Robbery,Robbery,Robbery
+/home/y_rajeshwar/final_year_project_29/ucf_dataset/Anomaly-Videos-Part-3/Anomaly-Videos-Part-3/Shooting/Shooting043_x264.mp4,945-1230,Shooting,Assault,Burglary
+/home/y_rajeshwar/final_year_project_29/ucf_dataset/Anomaly-Videos-Part-3/Anomaly-Videos-Part-3/Shooting/Shooting046_x264.mp4,4005-4230;4760-5088,Shooting,Abuse,Arrest
+/home/y_rajeshwar/final_year_project_29/ucf_dataset/Anomaly-Videos-Part-3/Anomaly-Videos-Part-3/Shooting/Shooting047_x264.mp4,2160-3900;4860-6600,Shooting,Shooting,Shooting
+/home/y_rajeshwar/final_year_project_29/ucf_dataset/Anomaly-Videos-Part-3/Anomaly-Videos-Part-3/Shooting/Shooting048_x264.mp4,1410-1730,Shooting,Normal,Normal
+/home/y_rajeshwar/final_year_project_29/ucf_dataset/Anomaly-Videos-Part-4/Anomaly-Videos-Part-4/Shoplifting/Shoplifting044_x264.mp4,11070-11250,Shoplifting,Robbery,Robbery
+/home/y_rajeshwar/final_year_project_29/ucf_dataset/Anomaly-Videos-Part-4/Anomaly-Videos-Part-4/Shoplifting/Shoplifting049_x264.mp4,1020-1350,Shoplifting,Burglary,Normal

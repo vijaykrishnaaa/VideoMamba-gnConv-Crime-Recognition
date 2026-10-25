@@ -1,0 +1,201 @@
+{
+  "test_acc_multiview": 73.46938848495483,
+  "test_acc_single_view": 70.74829936027527,
+  "test_macro_f1": 74.45994334370056,
+  "test_videos": 147,
+  "best": {
+    "epoch": 35,
+    "weights": "ema",
+    "val_acc": 72.34042286872864,
+    "val_loss": 1.0020302534103394,
+    "train_acc": 78.37772380716447
+  },
+  "params": {
+    "total_active": 116237197,
+    "trainable": 99169549,
+    "frozen": 17067648,
+    "removed_inactive_gnconv": 181635072,
+    "v1_v3_equivalent_total": 297872269,
+    "per_component_total": {
+      "Patch Embedding": 374400,
+      "Mamba SSM Layers": 25030656,
+      "gnConv2D Modules": 90817536,
+      "Classification Head": 5005,
+      "Norm Layers": 9600
+    },
+    "per_component_trainable": {
+      "Patch Embedding": 0,
+      "Mamba SSM Layers": 8343552,
+      "gnConv2D Modules": 90817536,
+      "Classification Head": 5005,
+      "Norm Layers": 3456
+    }
+  },
+  "compute": {
+    "macs_by_part": {
+      "Patch embedding (Conv3d)": 462422016,
+      "Mamba Conv1d": 231800832,
+      "Mamba linear projections": 37942788096,
+      "gnConv2D (layers 16-23)": 142232100864,
+      "Classification head": 4992,
+      "Selective scan (estimate)": 4164452352
+    },
+    "total_gmacs": 185.033569152,
+    "total_gflops": 370.067138304,
+    "removed_gnconv_gmacs": 284.464201728,
+    "latency_ms_v100_fp32_b1": 58.04800987243652
+  },
+  "per_class": [
+    {
+      "class": "Dragging",
+      "support": 14,
+      "correct": 7,
+      "precision": 0.4666666666666667,
+      "recall": 0.5,
+      "f1": 0.4827586206896552
+    },
+    {
+      "class": "Hitting",
+      "support": 14,
+      "correct": 7,
+      "precision": 0.7,
+      "recall": 0.5,
+      "f1": 0.5833333333333334
+    },
+    {
+      "class": "Kicking",
+      "support": 9,
+      "correct": 8,
+      "precision": 1.0,
+      "recall": 0.8888888888888888,
+      "f1": 0.9411764705882353
+    },
+    {
+      "class": "Pushing",
+      "support": 13,
+      "correct": 10,
+      "precision": 0.7692307692307693,
+      "recall": 0.7692307692307693,
+      "f1": 0.7692307692307693
+    },
+    {
+      "class": "abuse",
+      "support": 11,
+      "correct": 6,
+      "precision": 0.5454545454545454,
+      "recall": 0.5454545454545454,
+      "f1": 0.5454545454545454
+    },
+    {
+      "class": "hair pulling",
+      "support": 12,
+      "correct": 11,
+      "precision": 0.8461538461538461,
+      "recall": 0.9166666666666666,
+      "f1": 0.8799999999999999
+    },
+    {
+      "class": "neck grabbing",
+      "support": 12,
+      "correct": 9,
+      "precision": 0.75,
+      "recall": 0.75,
+      "f1": 0.75
+    },
+    {
+      "class": "punch",
+      "support": 2,
+      "correct": 2,
+      "precision": 0.6666666666666666,
+      "recall": 1.0,
+      "f1": 0.8
+    },
+    {
+      "class": "robbery",
+      "support": 9,
+      "correct": 7,
+      "precision": 0.875,
+      "recall": 0.7777777777777778,
+      "f1": 0.823529411764706
+    },
+    {
+      "class": "shooting",
+      "support": 13,
+      "correct": 12,
+      "precision": 0.8,
+      "recall": 0.9230769230769231,
+      "f1": 0.8571428571428571
+    },
+    {
+      "class": "slap",
+      "support": 10,
+      "correct": 8,
+      "precision": 0.6666666666666666,
+      "recall": 0.8,
+      "f1": 0.7272727272727272
+    },
+    {
+      "class": "snatching",
+      "support": 13,
+      "correct": 9,
+      "precision": 0.6923076923076923,
+      "recall": 0.6923076923076923,
+      "f1": 0.6923076923076923
+    },
+    {
+      "class": "stabbing",
+      "support": 15,
+      "correct": 12,
+      "precision": 0.8571428571428571,
+      "recall": 0.8,
+      "f1": 0.8275862068965518
+    }
+  ],
+  "config": {
+    "NUM_FRAMES": 8,
+    "IMG_SIZE": 224,
+    "UNFREEZE_LAST": 8,
+    "BATCH_SIZE": 2,
+    "ACCUM_STEPS": 8,
+    "EPOCHS": 40,
+    "WARMUP_EPOCHS": 3,
+    "PATIENCE": 10,
+    "LR_BACKBONE": 1e-05,
+    "LR_GNCONV": 0.0001,
+    "LR_HEAD": 0.001,
+    "WEIGHT_DECAY": 0.05,
+    "HEAD_DROPOUT": 0.5,
+    "DROP_PATH": 0.2,
+    "LABEL_SMOOTH": 0.1,
+    "MIXUP_ALPHA": 0.3,
+    "GRAD_CLIP": 1.0,
+    "EMA_DECAY": 0.995,
+    "RRC_SCALE": [
+      0.25,
+      1.0
+    ],
+    "RRC_RATIO": [
+      0.75,
+      1.3333333333333333
+    ],
+    "FLIP_P": 0.5,
+    "COLOR_JITTER": [
+      0.3,
+      0.3,
+      0.3,
+      0.05
+    ],
+    "GRAYSCALE_P": 0.1,
+    "ERASE_P": 0.25,
+    "ERASE_SCALE": [
+      0.02,
+      0.2
+    ],
+    "VAL_CLIPS": 2,
+    "VAL_CROPS": 3,
+    "TEST_CLIPS": 4,
+    "TEST_CROPS": 3,
+    "SEED": 42,
+    "PRETRAINED_PATH": "/home/y_rajeshwar/vlil_40/v1_ucf101/checkpoints_ucf101/best_ucf101_v6.pth"
+  }
+}

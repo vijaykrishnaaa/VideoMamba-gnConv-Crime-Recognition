@@ -1,0 +1,15 @@
+true \ predicted,Abuse,Arrest,Arson,Assault,Burglary,Explosion,Fighting,Normal,RoadAccidents,Robbery,Shooting,Shoplifting,Stealing,Vandalism
+Abuse,6,1,0,1,0,0,0,0,1,0,2,0,0,1
+Arrest,2,6,0,2,0,0,0,0,1,1,0,0,0,0
+Arson,0,0,7,0,1,1,0,0,0,0,2,0,0,1
+Assault,2,2,0,2,0,0,0,1,0,0,2,1,0,2
+Burglary,2,0,3,0,6,0,0,0,0,1,0,0,0,0
+Explosion,1,1,0,0,2,6,0,0,1,0,0,0,1,0
+Fighting,0,3,0,4,0,1,1,0,1,1,1,0,0,0
+Normal,0,0,0,0,1,0,1,5,2,0,0,1,1,1
+RoadAccidents,0,2,1,0,0,1,0,1,5,0,1,0,0,1
+Robbery,2,0,0,0,0,2,2,0,0,1,2,1,1,1
+Shooting,1,2,1,0,0,1,0,0,2,0,1,0,0,4
+Shoplifting,0,0,0,0,1,0,0,2,0,0,1,8,0,0
+Stealing,0,0,0,0,1,0,0,1,1,0,1,0,6,2
+Vandalism,1,0,2,0,1,2,0,1,0,0,1,1,1,2

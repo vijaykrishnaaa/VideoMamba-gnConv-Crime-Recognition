@@ -1,0 +1,13 @@
+0	Dragging
+1	Hitting
+2	Kicking
+3	Pushing
+4	abuse
+5	hair pulling
+6	neck grabbing
+7	punch
+8	robbery
+9	shooting
+10	slap
+11	snatching
+12	stabbing

@@ -1,0 +1,10 @@
+===== JOB 93087.amritahpc on node04 started Sat Oct 17 17:33:27 IST 2026 =====
+Unpacking /home/y_rajeshwar/env_backup/videomamba_env_full.tar.gz (5.9 GB) ...
+Unpacked to /home/y_rajeshwar/anaconda3/envs/videomamba_env at Sat Oct 17 17:38:30 IST 2026 (12G)
+python: /home/y_rajeshwar/anaconda3/envs/videomamba_env/bin/python
+torch 2.1.1+cu118 | torchvision 0.16.1+cu118 | opencv 4.11.0 | numpy 1.26.4
+CUDA available: True | Tesla V100-PCIE-16GB
+mamba_ssm     from /home/y_rajeshwar/videomamba_crime/Vim/mamba-1p1p1/mamba_ssm/__init__.py
+causal_conv1d from /home/y_rajeshwar/videomamba_crime/Vim/causal-conv1d/causal_conv1d/__init__.py
+ENV OK
+===== EXIT CODE 0 at Sat Oct 17 17:38:41 IST 2026 =====

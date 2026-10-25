@@ -1,0 +1,343 @@
+===== JOB 93088.amritahpc on node04 started Sat Oct 17 17:38:50 IST 2026 =====
+======================================================================
+V5 DATA PREPARATION — UCF-Crime frame cache + 4-fold train/val/test lists
+======================================================================
+  Dataset root : /home/y_rajeshwar/final_year_project_29/ucf_dataset
+  Split files  : /home/y_rajeshwar/final_year_project_29/ucf_dataset/UCF_Crimes-Train-Test-Split/Action_Regnition_splits
+  Output       : /home/y_rajeshwar/vlil_40/v5_ucf_crime
+  Workers      : 8
+  Classes (14): ['Abuse', 'Arrest', 'Arson', 'Assault', 'Burglary', 'Explosion', 'Fighting', 'Normal', 'RoadAccidents', 'Robbery', 'Shooting', 'Shoplifting', 'Stealing', 'Vandalism']
+  Fold 1: 532 train / 168 test listed
+  Fold 2: 532 train / 168 test listed
+  Fold 3: 532 train / 168 test listed
+  Fold 4: 532 train / 168 test listed
+  Indexing video files under the dataset root ...
+  1950 video files on disk, 700 listed in the splits
+  Temporal annotation: /home/y_rajeshwar/final_year_project_29/ucf_dataset/Temporal_Anomaly_Annotation_For_Testing_Videos/Txt_formate/Temporal_Anomaly_Annotation.txt | 140 crime videos with a window
+  To decode: 700 (with a crime window: 121) | missing on disk: 0
+  decoded 25/700  (8s)
+  decoded 50/700  (18s)
+  decoded 75/700  (31s)
+  decoded 100/700  (48s)
+  decoded 125/700  (63s)
+  decoded 150/700  (72s)
+  decoded 175/700  (86s)
+  decoded 200/700  (94s)
+  decoded 225/700  (105s)
+  decoded 250/700  (117s)
+  decoded 275/700  (126s)
+  decoded 300/700  (137s)
+  decoded 325/700  (153s)
+  decoded 350/700  (166s)
+  decoded 375/700  (180s)
+  decoded 400/700  (189s)
+  decoded 425/700  (195s)
+  decoded 450/700  (199s)
+  decoded 475/700  (211s)
+  decoded 500/700  (220s)
+  decoded 525/700  (230s)
+  decoded 550/700  (244s)
+  decoded 575/700  (260s)
+  decoded 600/700  (285s)
+  decoded 625/700  (295s)
+  decoded 650/700  (308s)
+  decoded 675/700  (317s)
+  decoded 700/700  (325s)
+======================================================================
+V5 DATASET REPORT — UCF-Crime, official Action Recognition split
+======================================================================
+Dataset root: /home/y_rajeshwar/final_year_project_29/ucf_dataset
+Videos listed: 700 | found: 700 | decoded OK: 700 | missing on disk: 0 | unreadable: 0
+
+Fold 1 (the first run):
+Class              Train     Val    Test   Total
+------------------------------------------------
+Abuse                 32       6      12      50
+Arrest                32       6      12      50
+Arson                 32       6      12      50
+Assault               32       6      12      50
+Burglary              32       6      12      50
+Explosion             32       6      12      50
+Fighting              32       6      12      50
+Normal                32       6      12      50
+RoadAccidents         32       6      12      50
+Robbery               32       6      12      50
+Shooting              32       6      12      50
+Shoplifting           32       6      12      50
+Stealing              32       6      12      50
+Vandalism             32       6      12      50
+------------------------------------------------
+TOTAL                448      84     168     700
+
+Fold 1: train 448 | val 84 | test 168 | same video in train and test: 0 | train<->test near-duplicates: 32
+Fold 2: train 448 | val 84 | test 168 | same video in train and test: 0 | train<->test near-duplicates: 37
+Fold 3: train 448 | val 84 | test 168 | same video in train and test: 0 | train<->test near-duplicates: 24
+Fold 4: train 448 | val 84 | test 168 | same video in train and test: 0 | train<->test near-duplicates: 30
+
+Crime windows (Temporal_Anomaly_Annotation, used ONLY for the extra crime-window test):
+  annotation file: /home/y_rajeshwar/final_year_project_29/ucf_dataset/Temporal_Anomaly_Annotation_For_Testing_Videos/Txt_formate/Temporal_Anomaly_Annotation.txt
+  videos of the 700 with a cached crime window: 121 (16 frames each from inside the window)
+  fold 1: test videos with a crime window: 36
+  fold 2: test videos with a crime window: 38
+  fold 3: test videos with a crime window: 31
+  fold 4: test videos with a crime window: 14
+
+Video length: min 3.5s | median 75.3s | mean 133.8s | max 78.8 min | longer than 5 min: 52 | longer than 10 min: 12
+  (8 frames sampled from a 75s video are ~9s apart; the cache keeps 64 frames, ~1.2s apart)
+  Abuse            median   89.7s | max   949.2s
+  Arrest           median  109.2s | max  2102.0s
+  Arson            median   84.3s | max  4218.4s
+  Assault          median   59.5s | max   539.2s
+  Burglary         median   88.9s | max   526.5s
+  Explosion        median   55.8s | max  4730.0s
+  Fighting         median  117.8s | max  1054.7s
+  Normal           median   53.6s | max   448.6s
+  RoadAccidents    median   33.7s | max   396.5s
+  Robbery          median   76.7s | max   509.3s
+  Shooting         median   59.9s | max   722.7s
+  Shoplifting      median   92.3s | max  2223.3s
+  Stealing         median  109.2s | max   727.2s
+  Vandalism        median   64.8s | max   419.6s
+Most common resolutions: 320x240 (700)
+Frame rates: 30 fps (700)
+
+File names found more than once (50) — the copy used:
+  Normal_Videos_event/Normal_Videos_015_x264.mp4  (2 copies)  ->  /home/y_rajeshwar/final_year_project_29/ucf_dataset/Normal_Videos_for_Event_Recognition/Normal_Videos_015_x264.mp4
+  Normal_Videos_event/Normal_Videos_050_x264.mp4  (2 copies)  ->  /home/y_rajeshwar/final_year_project_29/ucf_dataset/Normal_Videos_for_Event_Recognition/Normal_Videos_050_x264.mp4
+  Normal_Videos_event/Normal_Videos_100_x264.mp4  (2 copies)  ->  /home/y_rajeshwar/final_year_project_29/ucf_dataset/Normal_Videos_for_Event_Recognition/Normal_Videos_100_x264.mp4
+  Normal_Videos_event/Normal_Videos_129_x264.mp4  (2 copies)  ->  /home/y_rajeshwar/final_year_project_29/ucf_dataset/Normal_Videos_for_Event_Recognition/Normal_Videos_129_x264.mp4
+  Normal_Videos_event/Normal_Videos_150_x264.mp4  (2 copies)  ->  /home/y_rajeshwar/final_year_project_29/ucf_dataset/Normal_Videos_for_Event_Recognition/Normal_Videos_150_x264.mp4
+  Normal_Videos_event/Normal_Videos_246_x264.mp4  (2 copies)  ->  /home/y_rajeshwar/final_year_project_29/ucf_dataset/Normal_Videos_for_Event_Recognition/Normal_Videos_246_x264.mp4
+  Normal_Videos_event/Normal_Videos_247_x264.mp4  (2 copies)  ->  /home/y_rajeshwar/final_year_project_29/ucf_dataset/Normal_Videos_for_Event_Recognition/Normal_Videos_247_x264.mp4
+  Normal_Videos_event/Normal_Videos_248_x264.mp4  (2 copies)  ->  /home/y_rajeshwar/final_year_project_29/ucf_dataset/Normal_Videos_for_Event_Recognition/Normal_Videos_248_x264.mp4
+  Normal_Videos_event/Normal_Videos_251_x264.mp4  (2 copies)  ->  /home/y_rajeshwar/final_year_project_29/ucf_dataset/Normal_Videos_for_Event_Recognition/Normal_Videos_251_x264.mp4
+  Normal_Videos_event/Normal_Videos_289_x264.mp4  (2 copies)  ->  /home/y_rajeshwar/final_year_project_29/ucf_dataset/Normal_Videos_for_Event_Recognition/Normal_Videos_289_x264.mp4
+  Normal_Videos_event/Normal_Videos_310_x264.mp4  (2 copies)  ->  /home/y_rajeshwar/final_year_project_29/ucf_dataset/Normal_Videos_for_Event_Recognition/Normal_Videos_310_x264.mp4
+  Normal_Videos_event/Normal_Videos_312_x264.mp4  (2 copies)  ->  /home/y_rajeshwar/final_year_project_29/ucf_dataset/Normal_Videos_for_Event_Recognition/Normal_Videos_312_x264.mp4
+  Normal_Videos_event/Normal_Videos_317_x264.mp4  (2 copies)  ->  /home/y_rajeshwar/final_year_project_29/ucf_dataset/Normal_Videos_for_Event_Recognition/Normal_Videos_317_x264.mp4
+  Normal_Videos_event/Normal_Videos_345_x264.mp4  (2 copies)  ->  /home/y_rajeshwar/final_year_project_29/ucf_dataset/Normal_Videos_for_Event_Recognition/Normal_Videos_345_x264.mp4
+  Normal_Videos_event/Normal_Videos_352_x264.mp4  (2 copies)  ->  /home/y_rajeshwar/final_year_project_29/ucf_dataset/Normal_Videos_for_Event_Recognition/Normal_Videos_352_x264.mp4
+  Normal_Videos_event/Normal_Videos_360_x264.mp4  (2 copies)  ->  /home/y_rajeshwar/final_year_project_29/ucf_dataset/Normal_Videos_for_Event_Recognition/Normal_Videos_360_x264.mp4
+  Normal_Videos_event/Normal_Videos_365_x264.mp4  (2 copies)  ->  /home/y_rajeshwar/final_year_project_29/ucf_dataset/Normal_Videos_for_Event_Recognition/Normal_Videos_365_x264.mp4
+  Normal_Videos_event/Normal_Videos_401_x264.mp4  (2 copies)  ->  /home/y_rajeshwar/final_year_project_29/ucf_dataset/Normal_Videos_for_Event_Recognition/Normal_Videos_401_x264.mp4
+  Normal_Videos_event/Normal_Videos_417_x264.mp4  (2 copies)  ->  /home/y_rajeshwar/final_year_project_29/ucf_dataset/Normal_Videos_for_Event_Recognition/Normal_Videos_417_x264.mp4
+  Normal_Videos_event/Normal_Videos_439_x264.mp4  (2 copies)  ->  /home/y_rajeshwar/final_year_project_29/ucf_dataset/Normal_Videos_for_Event_Recognition/Normal_Videos_439_x264.mp4
+  Normal_Videos_event/Normal_Videos_452_x264.mp4  (2 copies)  ->  /home/y_rajeshwar/final_year_project_29/ucf_dataset/Normal_Videos_for_Event_Recognition/Normal_Videos_452_x264.mp4
+  Normal_Videos_event/Normal_Videos_453_x264.mp4  (2 copies)  ->  /home/y_rajeshwar/final_year_project_29/ucf_dataset/Normal_Videos_for_Event_Recognition/Normal_Videos_453_x264.mp4
+  Normal_Videos_event/Normal_Videos_478_x264.mp4  (2 copies)  ->  /home/y_rajeshwar/final_year_project_29/ucf_dataset/Normal_Videos_for_Event_Recognition/Normal_Videos_478_x264.mp4
+  Normal_Videos_event/Normal_Videos_576_x264.mp4  (2 copies)  ->  /home/y_rajeshwar/final_year_project_29/ucf_dataset/Normal_Videos_for_Event_Recognition/Normal_Videos_576_x264.mp4
+  Normal_Videos_event/Normal_Videos_597_x264.mp4  (2 copies)  ->  /home/y_rajeshwar/final_year_project_29/ucf_dataset/Normal_Videos_for_Event_Recognition/Normal_Videos_597_x264.mp4
+  Normal_Videos_event/Normal_Videos_603_x264.mp4  (2 copies)  ->  /home/y_rajeshwar/final_year_project_29/ucf_dataset/Normal_Videos_for_Event_Recognition/Normal_Videos_603_x264.mp4
+  Normal_Videos_event/Normal_Videos_606_x264.mp4  (2 copies)  ->  /home/y_rajeshwar/final_year_project_29/ucf_dataset/Normal_Videos_for_Event_Recognition/Normal_Videos_606_x264.mp4
+  Normal_Videos_event/Normal_Videos_621_x264.mp4  (2 copies)  ->  /home/y_rajeshwar/final_year_project_29/ucf_dataset/Normal_Videos_for_Event_Recognition/Normal_Videos_621_x264.mp4
+  Normal_Videos_event/Normal_Videos_634_x264.mp4  (2 copies)  ->  /home/y_rajeshwar/final_year_project_29/ucf_dataset/Normal_Videos_for_Event_Recognition/Normal_Videos_634_x264.mp4
+  Normal_Videos_event/Normal_Videos_641_x264.mp4  (2 copies)  ->  /home/y_rajeshwar/final_year_project_29/ucf_dataset/Normal_Videos_for_Event_Recognition/Normal_Videos_641_x264.mp4
+  Normal_Videos_event/Normal_Videos_656_x264.mp4  (2 copies)  ->  /home/y_rajeshwar/final_year_project_29/ucf_dataset/Normal_Videos_for_Event_Recognition/Normal_Videos_656_x264.mp4
+  Normal_Videos_event/Normal_Videos_696_x264.mp4  (2 copies)  ->  /home/y_rajeshwar/final_year_project_29/ucf_dataset/Normal_Videos_for_Event_Recognition/Normal_Videos_696_x264.mp4
+  Normal_Videos_event/Normal_Videos_704_x264.mp4  (2 copies)  ->  /home/y_rajeshwar/final_year_project_29/ucf_dataset/Normal_Videos_for_Event_Recognition/Normal_Videos_704_x264.mp4
+  Normal_Videos_event/Normal_Videos_722_x264.mp4  (2 copies)  ->  /home/y_rajeshwar/final_year_project_29/ucf_dataset/Normal_Videos_for_Event_Recognition/Normal_Videos_722_x264.mp4
+  Normal_Videos_event/Normal_Videos_745_x264.mp4  (2 copies)  ->  /home/y_rajeshwar/final_year_project_29/ucf_dataset/Normal_Videos_for_Event_Recognition/Normal_Videos_745_x264.mp4
+  Normal_Videos_event/Normal_Videos_758_x264.mp4  (2 copies)  ->  /home/y_rajeshwar/final_year_project_29/ucf_dataset/Normal_Videos_for_Event_Recognition/Normal_Videos_758_x264.mp4
+  Normal_Videos_event/Normal_Videos_781_x264.mp4  (2 copies)  ->  /home/y_rajeshwar/final_year_project_29/ucf_dataset/Normal_Videos_for_Event_Recognition/Normal_Videos_781_x264.mp4
+  Normal_Videos_event/Normal_Videos_798_x264.mp4  (2 copies)  ->  /home/y_rajeshwar/final_year_project_29/ucf_dataset/Normal_Videos_for_Event_Recognition/Normal_Videos_798_x264.mp4
+  Normal_Videos_event/Normal_Videos_801_x264.mp4  (2 copies)  ->  /home/y_rajeshwar/final_year_project_29/ucf_dataset/Normal_Videos_for_Event_Recognition/Normal_Videos_801_x264.mp4
+  Normal_Videos_event/Normal_Videos_828_x264.mp4  (2 copies)  ->  /home/y_rajeshwar/final_year_project_29/ucf_dataset/Normal_Videos_for_Event_Recognition/Normal_Videos_828_x264.mp4
+  Normal_Videos_event/Normal_Videos_831_x264.mp4  (2 copies)  ->  /home/y_rajeshwar/final_year_project_29/ucf_dataset/Normal_Videos_for_Event_Recognition/Normal_Videos_831_x264.mp4
+  Normal_Videos_event/Normal_Videos_877_x264.mp4  (2 copies)  ->  /home/y_rajeshwar/final_year_project_29/ucf_dataset/Normal_Videos_for_Event_Recognition/Normal_Videos_877_x264.mp4
+  Normal_Videos_event/Normal_Videos_881_x264.mp4  (2 copies)  ->  /home/y_rajeshwar/final_year_project_29/ucf_dataset/Normal_Videos_for_Event_Recognition/Normal_Videos_881_x264.mp4
+  Normal_Videos_event/Normal_Videos_885_x264.mp4  (2 copies)  ->  /home/y_rajeshwar/final_year_project_29/ucf_dataset/Normal_Videos_for_Event_Recognition/Normal_Videos_885_x264.mp4
+  Normal_Videos_event/Normal_Videos_892_x264.mp4  (2 copies)  ->  /home/y_rajeshwar/final_year_project_29/ucf_dataset/Normal_Videos_for_Event_Recognition/Normal_Videos_892_x264.mp4
+  Normal_Videos_event/Normal_Videos_905_x264.mp4  (2 copies)  ->  /home/y_rajeshwar/final_year_project_29/ucf_dataset/Normal_Videos_for_Event_Recognition/Normal_Videos_905_x264.mp4
+  Normal_Videos_event/Normal_Videos_912_x264.mp4  (2 copies)  ->  /home/y_rajeshwar/final_year_project_29/ucf_dataset/Normal_Videos_for_Event_Recognition/Normal_Videos_912_x264.mp4
+  Normal_Videos_event/Normal_Videos_913_x264.mp4  (2 copies)  ->  /home/y_rajeshwar/final_year_project_29/ucf_dataset/Normal_Videos_for_Event_Recognition/Normal_Videos_913_x264.mp4
+  Normal_Videos_event/Normal_Videos_914_x264.mp4  (2 copies)  ->  /home/y_rajeshwar/final_year_project_29/ucf_dataset/Normal_Videos_for_Event_Recognition/Normal_Videos_914_x264.mp4
+  Normal_Videos_event/Normal_Videos_929_x264.mp4  (2 copies)  ->  /home/y_rajeshwar/final_year_project_29/ucf_dataset/Normal_Videos_for_Event_Recognition/Normal_Videos_929_x264.mp4
+
+Fold 1: TRAIN <-> TEST near-duplicate videos (32):
+  (same scene/camera in train and test = possible leakage; the official test list is kept)
+  Abuse/Abuse004_x264.mp4  ~  Burglary/Burglary049_x264.mp4   [matching frames: 4]
+  Abuse/Abuse011_x264.mp4  ~  Vandalism/Vandalism039_x264.mp4   [matching frames: 2]
+  Arrest/Arrest009_x264.mp4  ~  Assault/Assault051_x264.mp4   [matching frames: 4]
+  Arrest/Arrest009_x264.mp4  ~  Explosion/Explosion044_x264.mp4   [matching frames: 2]
+  Arrest/Arrest009_x264.mp4  ~  Shooting/Shooting015_x264.mp4   [matching frames: 10]
+  Arrest/Arrest020_x264.mp4  ~  Arson/Arson013_x264.mp4   [matching frames: 3]
+  Arrest/Arrest022_x264.mp4  ~  Shooting/Shooting012_x264.mp4   [matching frames: 4]
+  Arson/Arson006_x264.mp4  ~  Stealing/Stealing042_x264.mp4   [matching frames: 2]
+  Arson/Arson009_x264.mp4  ~  Assault/Assault051_x264.mp4   [matching frames: 2]
+  Arson/Arson011_x264.mp4  ~  Assault/Assault051_x264.mp4   [matching frames: 2]
+  Arson/Arson011_x264.mp4  ~  Explosion/Explosion016_x264.mp4   [matching frames: 2]
+  Arson/Arson012_x264.mp4  ~  Assault/Assault052_x264.mp4   [matching frames: 2]
+  Arson/Arson012_x264.mp4  ~  Stealing/Stealing042_x264.mp4   [matching frames: 2]
+  Arson/Arson032_x264.mp4  ~  Explosion/Explosion004_x264.mp4   [matching frames: 2]
+  Arson/Arson039_x264.mp4  ~  Shooting/Shooting012_x264.mp4   [matching frames: 2]
+  Arson/Arson046_x264.mp4  ~  Fighting/Fighting004_x264.mp4   [matching frames: 2]
+  Arson/Arson049_x264.mp4  ~  Normal_Videos_event/Normal_Videos_015_x264.mp4   [matching frames: 3]
+  Arson/Arson049_x264.mp4  ~  Shooting/Shooting012_x264.mp4   [matching frames: 2]
+  Assault/Assault001_x264.mp4  ~  Shooting/Shooting043_x264.mp4   [matching frames: 3]
+  Assault/Assault008_x264.mp4  ~  Fighting/Fighting044_x264.mp4   [matching frames: 4]
+  Assault/Assault051_x264.mp4  ~  Shooting/Shooting012_x264.mp4   [matching frames: 2]
+  Explosion/Explosion004_x264.mp4  ~  Stealing/Stealing042_x264.mp4   [matching frames: 2]
+  Explosion/Explosion007_x264.mp4  ~  Stealing/Stealing028_x264.mp4   [matching frames: 2]
+  Explosion/Explosion012_x264.mp4  ~  RoadAccidents/RoadAccidents031_x264.mp4   [matching frames: 2]
+  Explosion/Explosion012_x264.mp4  ~  Shooting/Shooting015_x264.mp4   [matching frames: 4]
+  Fighting/Fighting004_x264.mp4  ~  Fighting/Fighting026_x264.mp4   [matching frames: 2]
+  Fighting/Fighting014_x264.mp4  ~  Shooting/Shooting012_x264.mp4   [matching frames: 2]
+  RoadAccidents/RoadAccidents007_x264.mp4  ~  RoadAccidents/RoadAccidents050_x264.mp4   [matching frames: 9]
+  Shooting/Shooting012_x264.mp4  ~  Shooting/Shooting013_x264.mp4   [matching frames: 2]
+  Shooting/Shooting012_x264.mp4  ~  Shoplifting/Shoplifting019_x264.mp4   [matching frames: 2]
+  Shooting/Shooting012_x264.mp4  ~  Stealing/Stealing028_x264.mp4   [matching frames: 2]
+  Stealing/Stealing028_x264.mp4  ~  Vandalism/Vandalism002_x264.mp4   [matching frames: 3]
+Fold 2: TRAIN <-> TEST near-duplicate videos (37):
+  (same scene/camera in train and test = possible leakage; the official test list is kept)
+  Arrest/Arrest009_x264.mp4  ~  Shooting/Shooting015_x264.mp4   [matching frames: 10]
+  Arrest/Arrest014_x264.mp4  ~  Arrest/Arrest031_x264.mp4   [matching frames: 5]
+  Arrest/Arrest014_x264.mp4  ~  Assault/Assault041_x264.mp4   [matching frames: 2]
+  Arrest/Arrest020_x264.mp4  ~  Arson/Arson013_x264.mp4   [matching frames: 3]
+  Arrest/Arrest020_x264.mp4  ~  Shooting/Shooting043_x264.mp4   [matching frames: 3]
+  Arrest/Arrest020_x264.mp4  ~  Stealing/Stealing042_x264.mp4   [matching frames: 3]
+  Arrest/Arrest022_x264.mp4  ~  Arson/Arson039_x264.mp4   [matching frames: 2]
+  Arrest/Arrest022_x264.mp4  ~  Explosion/Explosion046_x264.mp4   [matching frames: 3]
+  Arrest/Arrest022_x264.mp4  ~  Shooting/Shooting012_x264.mp4   [matching frames: 4]
+  Arson/Arson011_x264.mp4  ~  Explosion/Explosion016_x264.mp4   [matching frames: 2]
+  Arson/Arson021_x264.mp4  ~  Shooting/Shooting043_x264.mp4   [matching frames: 4]
+  Arson/Arson021_x264.mp4  ~  Vandalism/Vandalism032_x264.mp4   [matching frames: 2]
+  Arson/Arson024_x264.mp4  ~  Stealing/Stealing042_x264.mp4   [matching frames: 4]
+  Arson/Arson032_x264.mp4  ~  Vandalism/Vandalism019_x264.mp4   [matching frames: 4]
+  Arson/Arson039_x264.mp4  ~  Explosion/Explosion020_x264.mp4   [matching frames: 2]
+  Arson/Arson039_x264.mp4  ~  Fighting/Fighting014_x264.mp4   [matching frames: 2]
+  Arson/Arson041_x264.mp4  ~  Shooting/Shooting024_x264.mp4   [matching frames: 2]
+  Arson/Arson049_x264.mp4  ~  Shoplifting/Shoplifting019_x264.mp4   [matching frames: 3]
+  Assault/Assault031_x264.mp4  ~  Explosion/Explosion022_x264.mp4   [matching frames: 2]
+  Assault/Assault031_x264.mp4  ~  Fighting/Fighting023_x264.mp4   [matching frames: 2]
+  Assault/Assault051_x264.mp4  ~  Shooting/Shooting015_x264.mp4   [matching frames: 4]
+  Assault/Assault052_x264.mp4  ~  Explosion/Explosion015_x264.mp4   [matching frames: 3]
+  Burglary/Burglary030_x264.mp4  ~  Fighting/Fighting014_x264.mp4   [matching frames: 3]
+  Burglary/Burglary043_x264.mp4  ~  Fighting/Fighting023_x264.mp4   [matching frames: 4]
+  Burglary/Burglary047_x264.mp4  ~  Explosion/Explosion016_x264.mp4   [matching frames: 2]
+  Explosion/Explosion012_x264.mp4  ~  Shooting/Shooting015_x264.mp4   [matching frames: 4]
+  Explosion/Explosion016_x264.mp4  ~  Explosion/Explosion051_x264.mp4   [matching frames: 4]
+  Explosion/Explosion044_x264.mp4  ~  Shooting/Shooting015_x264.mp4   [matching frames: 2]
+  Explosion/Explosion046_x264.mp4  ~  Fighting/Fighting014_x264.mp4   [matching frames: 2]
+  Explosion/Explosion046_x264.mp4  ~  Shooting/Shooting013_x264.mp4   [matching frames: 2]
+  Explosion/Explosion046_x264.mp4  ~  Vandalism/Vandalism019_x264.mp4   [matching frames: 3]
+  Explosion/Explosion048_x264.mp4  ~  Vandalism/Vandalism019_x264.mp4   [matching frames: 4]
+  Fighting/Fighting014_x264.mp4  ~  Shooting/Shooting012_x264.mp4   [matching frames: 2]
+  Shooting/Shooting012_x264.mp4  ~  Shooting/Shooting013_x264.mp4   [matching frames: 2]
+  Shooting/Shooting012_x264.mp4  ~  Shoplifting/Shoplifting019_x264.mp4   [matching frames: 2]
+  Shooting/Shooting013_x264.mp4  ~  Stealing/Stealing042_x264.mp4   [matching frames: 2]
+  Stealing/Stealing042_x264.mp4  ~  Vandalism/Vandalism019_x264.mp4   [matching frames: 8]
+Fold 3: TRAIN <-> TEST near-duplicate videos (24):
+  (same scene/camera in train and test = possible leakage; the official test list is kept)
+  Arrest/Arrest014_x264.mp4  ~  Arrest/Arrest031_x264.mp4   [matching frames: 5]
+  Arrest/Arrest020_x264.mp4  ~  Stealing/Stealing042_x264.mp4   [matching frames: 3]
+  Arson/Arson006_x264.mp4  ~  Stealing/Stealing042_x264.mp4   [matching frames: 2]
+  Arson/Arson012_x264.mp4  ~  Stealing/Stealing042_x264.mp4   [matching frames: 2]
+  Arson/Arson021_x264.mp4  ~  Vandalism/Vandalism032_x264.mp4   [matching frames: 2]
+  Arson/Arson024_x264.mp4  ~  Stealing/Stealing042_x264.mp4   [matching frames: 4]
+  Arson/Arson032_x264.mp4  ~  Explosion/Explosion004_x264.mp4   [matching frames: 2]
+  Arson/Arson032_x264.mp4  ~  Vandalism/Vandalism019_x264.mp4   [matching frames: 4]
+  Arson/Arson039_x264.mp4  ~  Stealing/Stealing042_x264.mp4   [matching frames: 3]
+  Assault/Assault031_x264.mp4  ~  Explosion/Explosion022_x264.mp4   [matching frames: 2]
+  Assault/Assault031_x264.mp4  ~  Fighting/Fighting023_x264.mp4   [matching frames: 2]
+  Assault/Assault031_x264.mp4  ~  RoadAccidents/RoadAccidents042_x264.mp4   [matching frames: 2]
+  Burglary/Burglary030_x264.mp4  ~  Fighting/Fighting014_x264.mp4   [matching frames: 3]
+  Burglary/Burglary030_x264.mp4  ~  Fighting/Fighting043_x264.mp4   [matching frames: 3]
+  Explosion/Explosion004_x264.mp4  ~  Stealing/Stealing042_x264.mp4   [matching frames: 2]
+  Explosion/Explosion007_x264.mp4  ~  Stealing/Stealing028_x264.mp4   [matching frames: 2]
+  Explosion/Explosion012_x264.mp4  ~  RoadAccidents/RoadAccidents031_x264.mp4   [matching frames: 2]
+  Explosion/Explosion046_x264.mp4  ~  Stealing/Stealing028_x264.mp4   [matching frames: 2]
+  Explosion/Explosion046_x264.mp4  ~  Stealing/Stealing042_x264.mp4   [matching frames: 2]
+  Fighting/Fighting004_x264.mp4  ~  Fighting/Fighting026_x264.mp4   [matching frames: 2]
+  Shooting/Shooting012_x264.mp4  ~  Stealing/Stealing028_x264.mp4   [matching frames: 2]
+  Shooting/Shooting013_x264.mp4  ~  Stealing/Stealing042_x264.mp4   [matching frames: 2]
+  Stealing/Stealing028_x264.mp4  ~  Vandalism/Vandalism002_x264.mp4   [matching frames: 3]
+  Stealing/Stealing042_x264.mp4  ~  Vandalism/Vandalism019_x264.mp4   [matching frames: 8]
+Fold 4: TRAIN <-> TEST near-duplicate videos (30):
+  (same scene/camera in train and test = possible leakage; the official test list is kept)
+  Abuse/Abuse011_x264.mp4  ~  Vandalism/Vandalism039_x264.mp4   [matching frames: 2]
+  Arrest/Arrest009_x264.mp4  ~  Explosion/Explosion044_x264.mp4   [matching frames: 2]
+  Arrest/Arrest014_x264.mp4  ~  Assault/Assault041_x264.mp4   [matching frames: 2]
+  Arrest/Arrest020_x264.mp4  ~  Shooting/Shooting043_x264.mp4   [matching frames: 3]
+  Arrest/Arrest022_x264.mp4  ~  Arson/Arson039_x264.mp4   [matching frames: 2]
+  Arrest/Arrest022_x264.mp4  ~  Explosion/Explosion046_x264.mp4   [matching frames: 3]
+  Arson/Arson021_x264.mp4  ~  Shooting/Shooting043_x264.mp4   [matching frames: 4]
+  Arson/Arson039_x264.mp4  ~  Explosion/Explosion020_x264.mp4   [matching frames: 2]
+  Arson/Arson039_x264.mp4  ~  Fighting/Fighting014_x264.mp4   [matching frames: 2]
+  Arson/Arson039_x264.mp4  ~  Shooting/Shooting012_x264.mp4   [matching frames: 2]
+  Arson/Arson039_x264.mp4  ~  Stealing/Stealing042_x264.mp4   [matching frames: 3]
+  Arson/Arson041_x264.mp4  ~  Shooting/Shooting024_x264.mp4   [matching frames: 2]
+  Arson/Arson046_x264.mp4  ~  Fighting/Fighting004_x264.mp4   [matching frames: 2]
+  Arson/Arson049_x264.mp4  ~  Normal_Videos_event/Normal_Videos_015_x264.mp4   [matching frames: 3]
+  Arson/Arson049_x264.mp4  ~  Shooting/Shooting012_x264.mp4   [matching frames: 2]
+  Arson/Arson049_x264.mp4  ~  Shoplifting/Shoplifting019_x264.mp4   [matching frames: 3]
+  Assault/Assault001_x264.mp4  ~  Shooting/Shooting043_x264.mp4   [matching frames: 3]
+  Assault/Assault008_x264.mp4  ~  Fighting/Fighting044_x264.mp4   [matching frames: 4]
+  Assault/Assault031_x264.mp4  ~  RoadAccidents/RoadAccidents042_x264.mp4   [matching frames: 2]
+  Assault/Assault051_x264.mp4  ~  Fighting/Fighting043_x264.mp4   [matching frames: 2]
+  Burglary/Burglary030_x264.mp4  ~  Fighting/Fighting043_x264.mp4   [matching frames: 3]
+  Burglary/Burglary043_x264.mp4  ~  Fighting/Fighting023_x264.mp4   [matching frames: 4]
+  Burglary/Burglary047_x264.mp4  ~  Explosion/Explosion016_x264.mp4   [matching frames: 2]
+  Explosion/Explosion044_x264.mp4  ~  Shooting/Shooting015_x264.mp4   [matching frames: 2]
+  Explosion/Explosion046_x264.mp4  ~  Fighting/Fighting014_x264.mp4   [matching frames: 2]
+  Explosion/Explosion046_x264.mp4  ~  Shooting/Shooting013_x264.mp4   [matching frames: 2]
+  Explosion/Explosion046_x264.mp4  ~  Stealing/Stealing028_x264.mp4   [matching frames: 2]
+  Explosion/Explosion046_x264.mp4  ~  Stealing/Stealing042_x264.mp4   [matching frames: 2]
+  Explosion/Explosion046_x264.mp4  ~  Vandalism/Vandalism019_x264.mp4   [matching frames: 3]
+  Explosion/Explosion048_x264.mp4  ~  Vandalism/Vandalism019_x264.mp4   [matching frames: 4]
+Near-duplicate videos with DIFFERENT labels: 78
+  Abuse/Abuse004_x264.mp4  ~  Burglary/Burglary049_x264.mp4
+  Abuse/Abuse011_x264.mp4  ~  Vandalism/Vandalism039_x264.mp4
+  Abuse/Abuse019_x264.mp4  ~  Assault/Assault018_x264.mp4
+  Arrest/Arrest009_x264.mp4  ~  Assault/Assault051_x264.mp4
+  Arrest/Arrest009_x264.mp4  ~  Explosion/Explosion012_x264.mp4
+  Arrest/Arrest009_x264.mp4  ~  Explosion/Explosion044_x264.mp4
+  Arrest/Arrest009_x264.mp4  ~  Shooting/Shooting015_x264.mp4
+  Arrest/Arrest014_x264.mp4  ~  Assault/Assault041_x264.mp4
+  Arrest/Arrest020_x264.mp4  ~  Arson/Arson013_x264.mp4
+  Arrest/Arrest020_x264.mp4  ~  Explosion/Explosion021_x264.mp4
+  Arrest/Arrest020_x264.mp4  ~  Shooting/Shooting043_x264.mp4
+  Arrest/Arrest020_x264.mp4  ~  Stealing/Stealing042_x264.mp4
+  Arrest/Arrest022_x264.mp4  ~  Arson/Arson039_x264.mp4
+  Arrest/Arrest022_x264.mp4  ~  Explosion/Explosion046_x264.mp4
+  Arrest/Arrest022_x264.mp4  ~  Shooting/Shooting012_x264.mp4
+  Arrest/Arrest022_x264.mp4  ~  Shoplifting/Shoplifting019_x264.mp4
+  Arrest/Arrest031_x264.mp4  ~  Fighting/Fighting026_x264.mp4
+  Arson/Arson006_x264.mp4  ~  Explosion/Explosion004_x264.mp4
+  Arson/Arson006_x264.mp4  ~  Stealing/Stealing042_x264.mp4
+  Arson/Arson009_x264.mp4  ~  Assault/Assault051_x264.mp4
+  Arson/Arson011_x264.mp4  ~  Assault/Assault051_x264.mp4
+  Arson/Arson011_x264.mp4  ~  Explosion/Explosion016_x264.mp4
+  Arson/Arson012_x264.mp4  ~  Assault/Assault052_x264.mp4
+  Arson/Arson012_x264.mp4  ~  Stealing/Stealing042_x264.mp4
+  Arson/Arson021_x264.mp4  ~  Shooting/Shooting043_x264.mp4
+  Arson/Arson021_x264.mp4  ~  Vandalism/Vandalism032_x264.mp4
+  Arson/Arson024_x264.mp4  ~  Stealing/Stealing042_x264.mp4
+  Arson/Arson024_x264.mp4  ~  Vandalism/Vandalism019_x264.mp4
+  Arson/Arson032_x264.mp4  ~  Explosion/Explosion004_x264.mp4
+  Arson/Arson032_x264.mp4  ~  Stealing/Stealing042_x264.mp4
+  Arson/Arson032_x264.mp4  ~  Vandalism/Vandalism019_x264.mp4
+  Arson/Arson039_x264.mp4  ~  Explosion/Explosion020_x264.mp4
+  Arson/Arson039_x264.mp4  ~  Explosion/Explosion046_x264.mp4
+  Arson/Arson039_x264.mp4  ~  Fighting/Fighting014_x264.mp4
+  Arson/Arson039_x264.mp4  ~  Shooting/Shooting012_x264.mp4
+  Arson/Arson039_x264.mp4  ~  Stealing/Stealing042_x264.mp4
+  Arson/Arson041_x264.mp4  ~  Shooting/Shooting024_x264.mp4
+  Arson/Arson046_x264.mp4  ~  Fighting/Fighting004_x264.mp4
+  Arson/Arson049_x264.mp4  ~  Explosion/Explosion046_x264.mp4
+  Arson/Arson049_x264.mp4  ~  Normal_Videos_event/Normal_Videos_015_x264.mp4
+  Arson/Arson049_x264.mp4  ~  Shooting/Shooting012_x264.mp4
+  Arson/Arson049_x264.mp4  ~  Shoplifting/Shoplifting019_x264.mp4
+  Assault/Assault001_x264.mp4  ~  Shooting/Shooting043_x264.mp4
+  Assault/Assault008_x264.mp4  ~  Fighting/Fighting044_x264.mp4
+  Assault/Assault031_x264.mp4  ~  Explosion/Explosion022_x264.mp4
+  Assault/Assault031_x264.mp4  ~  Fighting/Fighting023_x264.mp4
+  Assault/Assault031_x264.mp4  ~  Fighting/Fighting030_x264.mp4
+  Assault/Assault031_x264.mp4  ~  RoadAccidents/RoadAccidents042_x264.mp4
+  Assault/Assault041_x264.mp4  ~  Shooting/Shooting043_x264.mp4
+  Assault/Assault051_x264.mp4  ~  Fighting/Fighting043_x264.mp4
+
+Split lists written to: /home/y_rajeshwar/vlil_40/v5_ucf_crime/splits/fold1 .. fold4  (+ classes.txt)
+Frame cache: /home/y_rajeshwar/vlil_40/v5_ucf_crime/frame_cache  (newly decoded: 700, reused: 0)
+Total time: 326s
+PREP DONE
+===== EXIT CODE 0 at Sat Oct 17 17:44:17 IST 2026 =====

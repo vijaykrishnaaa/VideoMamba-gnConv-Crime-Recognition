@@ -1,0 +1,148 @@
+video,true,predicted,confidence,correct
+/home/y_rajeshwar/final_year_project_29/dataset_new_split_clean/test/Dragging/Screenrecorder-2025-12-14-23-53-02-141.mp4,Dragging,abuse,0.486,0
+/home/y_rajeshwar/final_year_project_29/dataset_new_split_clean/test/Dragging/Screenrecorder-2025-12-15-00-04-19-543.mp4,Dragging,Dragging,0.378,1
+/home/y_rajeshwar/final_year_project_29/dataset_new_split_clean/test/Dragging/VID_20251214_234223.mp4,Dragging,Dragging,0.580,1
+/home/y_rajeshwar/final_year_project_29/dataset_new_split_clean/test/Dragging/VID_20251214_234500.mp4,Dragging,Dragging,0.318,1
+/home/y_rajeshwar/final_year_project_29/dataset_new_split_clean/test/Dragging/VID_20251214_234536.mp4,Dragging,Dragging,0.593,1
+/home/y_rajeshwar/final_year_project_29/dataset_new_split_clean/test/Dragging/VID_20251214_234755.mp4,Dragging,Hitting,0.216,0
+/home/y_rajeshwar/final_year_project_29/dataset_new_split_clean/test/Dragging/VID_20251215_002154.mp4,Dragging,slap,0.489,0
+/home/y_rajeshwar/final_year_project_29/dataset_new_split_clean/test/Dragging/VID_20251215_003000.mp4,Dragging,Hitting,0.672,0
+/home/y_rajeshwar/final_year_project_29/dataset_new_split_clean/test/Dragging/VID_20251215_005832.mp4,Dragging,Hitting,0.387,0
+/home/y_rajeshwar/final_year_project_29/dataset_new_split_clean/test/Dragging/VID_20251215_084043.mp4,Dragging,neck grabbing,0.385,0
+/home/y_rajeshwar/final_year_project_29/dataset_new_split_clean/test/Dragging/VID_20251215_084242.mp4,Dragging,Dragging,0.658,1
+/home/y_rajeshwar/final_year_project_29/dataset_new_split_clean/test/Dragging/VID_20251217_162613.mp4,Dragging,Dragging,0.280,1
+/home/y_rajeshwar/final_year_project_29/dataset_new_split_clean/test/Dragging/VID_20251217_224339.mp4,Dragging,Dragging,0.480,1
+/home/y_rajeshwar/final_year_project_29/dataset_new_split_clean/test/Dragging/VID_20251217_224536.mp4,Dragging,snatching,0.421,0
+/home/y_rajeshwar/final_year_project_29/dataset_new_split_clean/test/Hitting/VID_20251214_175947.mp4,Hitting,stabbing,0.397,0
+/home/y_rajeshwar/final_year_project_29/dataset_new_split_clean/test/Hitting/VID_20251214_180912.mp4,Hitting,Dragging,0.408,0
+/home/y_rajeshwar/final_year_project_29/dataset_new_split_clean/test/Hitting/VID_20251214_181310.mp4,Hitting,Hitting,0.538,1
+/home/y_rajeshwar/final_year_project_29/dataset_new_split_clean/test/Hitting/VID_20251214_184239.mp4,Hitting,snatching,0.655,0
+/home/y_rajeshwar/final_year_project_29/dataset_new_split_clean/test/Hitting/VID_20251214_184336.mp4,Hitting,Dragging,0.298,0
+/home/y_rajeshwar/final_year_project_29/dataset_new_split_clean/test/Hitting/VID_20251214_184446.mp4,Hitting,Hitting,0.385,1
+/home/y_rajeshwar/final_year_project_29/dataset_new_split_clean/test/Hitting/VID_20251214_184758.mp4,Hitting,Hitting,0.322,1
+/home/y_rajeshwar/final_year_project_29/dataset_new_split_clean/test/Hitting/VID_20251214_185858.mp4,Hitting,Hitting,0.864,1
+/home/y_rajeshwar/final_year_project_29/dataset_new_split_clean/test/Hitting/VID_20251214_194226.mp4,Hitting,Dragging,0.345,0
+/home/y_rajeshwar/final_year_project_29/dataset_new_split_clean/test/Hitting/VID_20251214_194342.mp4,Hitting,Hitting,0.339,1
+/home/y_rajeshwar/final_year_project_29/dataset_new_split_clean/test/Hitting/VID_20251214_200040.mp4,Hitting,Dragging,0.406,0
+/home/y_rajeshwar/final_year_project_29/dataset_new_split_clean/test/Hitting/VID_20251217_162355.mp4,Hitting,Hitting,0.648,1
+/home/y_rajeshwar/final_year_project_29/dataset_new_split_clean/test/Hitting/VID_20251217_162747.mp4,Hitting,shooting,0.303,0
+/home/y_rajeshwar/final_year_project_29/dataset_new_split_clean/test/Hitting/VID_20251217_162820.mp4,Hitting,Hitting,0.420,1
+/home/y_rajeshwar/final_year_project_29/dataset_new_split_clean/test/Kicking/Screen_Recording_20251210_171357_YouTube_1.mp4,Kicking,Dragging,0.364,0
+/home/y_rajeshwar/final_year_project_29/dataset_new_split_clean/test/Kicking/Screen_Recording_20251210_173649_YouTube_4.mp4,Kicking,Kicking,0.873,1
+/home/y_rajeshwar/final_year_project_29/dataset_new_split_clean/test/Kicking/Screen_Recording_20251210_173649_YouTube_6.mp4,Kicking,Kicking,0.879,1
+/home/y_rajeshwar/final_year_project_29/dataset_new_split_clean/test/Kicking/Screen_Recording_20251214_134525_One UI Home_2.mp4,Kicking,Kicking,0.841,1
+/home/y_rajeshwar/final_year_project_29/dataset_new_split_clean/test/Kicking/Screen_Recording_20260824_214137_YouTube_1.mp4,Kicking,Kicking,0.886,1
+/home/y_rajeshwar/final_year_project_29/dataset_new_split_clean/test/Kicking/Screen_Recording_20260824_214137_YouTube_2.mp4,Kicking,Kicking,0.858,1
+/home/y_rajeshwar/final_year_project_29/dataset_new_split_clean/test/Kicking/Screen_Recording_20260824_214137_YouTube_3 (1).mp4,Kicking,Kicking,0.790,1
+/home/y_rajeshwar/final_year_project_29/dataset_new_split_clean/test/Kicking/Screen_Recording_20260824_220925_YouTube_3.mp4,Kicking,Kicking,0.926,1
+/home/y_rajeshwar/final_year_project_29/dataset_new_split_clean/test/Kicking/Screen_Recording_20260824_221552_YouTube.mp4,Kicking,Kicking,0.933,1
+/home/y_rajeshwar/final_year_project_29/dataset_new_split_clean/test/Pushing/Media Player 2026-09-01 19-05-00.mp4,Pushing,Pushing,0.895,1
+/home/y_rajeshwar/final_year_project_29/dataset_new_split_clean/test/Pushing/Media Player 2026-09-01 19-05-48.mp4,Pushing,Pushing,0.814,1
+/home/y_rajeshwar/final_year_project_29/dataset_new_split_clean/test/Pushing/Screen Recording 2026-09-02 225939.mp4,Pushing,Pushing,0.563,1
+/home/y_rajeshwar/final_year_project_29/dataset_new_split_clean/test/Pushing/ScreenRecording_09-02-2026 22-51-34_1.mov,Pushing,neck grabbing,0.351,0
+/home/y_rajeshwar/final_year_project_29/dataset_new_split_clean/test/Pushing/ScreenRecording_09-02-2026 23-06-31_1.mov,Pushing,Pushing,0.462,1
+/home/y_rajeshwar/final_year_project_29/dataset_new_split_clean/test/Pushing/Screen_Recording_20251214_103601_YouTube_1.mp4,Pushing,Pushing,0.894,1
+/home/y_rajeshwar/final_year_project_29/dataset_new_split_clean/test/Pushing/Screen_Recording_20251214_103601_YouTube_2.mp4,Pushing,Pushing,0.860,1
+/home/y_rajeshwar/final_year_project_29/dataset_new_split_clean/test/Pushing/Screen_Recording_20251214_103601_YouTube_6.mp4,Pushing,Pushing,0.912,1
+/home/y_rajeshwar/final_year_project_29/dataset_new_split_clean/test/Pushing/Screen_Recording_20251214_112705_YouTube_3.mp4,Pushing,Pushing,0.901,1
+/home/y_rajeshwar/final_year_project_29/dataset_new_split_clean/test/Pushing/WhatsApp Video 2026-09-02 at 23.12.06.mp4,Pushing,Pushing,0.811,1
+/home/y_rajeshwar/final_year_project_29/dataset_new_split_clean/test/Pushing/WhatsApp Video 2026-09-02 at 23.12.07.mp4,Pushing,Pushing,0.743,1
+/home/y_rajeshwar/final_year_project_29/dataset_new_split_clean/test/Pushing/a6.mp4,Pushing,slap,0.214,0
+/home/y_rajeshwar/final_year_project_29/dataset_new_split_clean/test/Pushing/a8.mp4,Pushing,slap,0.469,0
+/home/y_rajeshwar/final_year_project_29/dataset_new_split_clean/test/abuse/Screen Recording 2025-12-14 002155.mp4,abuse,abuse,0.638,1
+/home/y_rajeshwar/final_year_project_29/dataset_new_split_clean/test/abuse/ScreenRecording_08-27-2026 18-09-19_1.mov,abuse,abuse,0.846,1
+/home/y_rajeshwar/final_year_project_29/dataset_new_split_clean/test/abuse/ScreenRecording_08-27-2026 18-10-06_1.mov,abuse,neck grabbing,0.576,0
+/home/y_rajeshwar/final_year_project_29/dataset_new_split_clean/test/abuse/ScreenRecording_12-12-2025 00-12-03_1.MOV,abuse,abuse,0.470,1
+/home/y_rajeshwar/final_year_project_29/dataset_new_split_clean/test/abuse/ScreenRecording_12-12-2025 00-36-27_1.MOV,abuse,abuse,0.763,1
+/home/y_rajeshwar/final_year_project_29/dataset_new_split_clean/test/abuse/ScreenRecording_12-13-2025 20-34-26_1.mov,abuse,snatching,0.439,0
+/home/y_rajeshwar/final_year_project_29/dataset_new_split_clean/test/abuse/ScreenRecording_12-13-2025 20-38-13_1.mov,abuse,shooting,0.563,0
+/home/y_rajeshwar/final_year_project_29/dataset_new_split_clean/test/abuse/ScreenRecording_12-13-2025 20-47-37_1.mov,abuse,abuse,0.654,1
+/home/y_rajeshwar/final_year_project_29/dataset_new_split_clean/test/abuse/ScreenRecording_12-13-2025 20-50-14_1.mov,abuse,Pushing,0.274,0
+/home/y_rajeshwar/final_year_project_29/dataset_new_split_clean/test/abuse/ScreenRecording_12-13-2025 20.MOV,abuse,abuse,0.629,1
+/home/y_rajeshwar/final_year_project_29/dataset_new_split_clean/test/abuse/ScreenRecording_12-14-2025 00-01-41_1.mov,abuse,robbery,0.561,0
+/home/y_rajeshwar/final_year_project_29/dataset_new_split_clean/test/hair pulling/Screen Recording 2025-12-13 224316.mp4,hair pulling,hair pulling,0.828,1
+/home/y_rajeshwar/final_year_project_29/dataset_new_split_clean/test/hair pulling/Screen Recording 2025-12-14 000537.mp4,hair pulling,hair pulling,0.584,1
+/home/y_rajeshwar/final_year_project_29/dataset_new_split_clean/test/hair pulling/Screen Recording 2025-12-14 000910.mp4,hair pulling,hair pulling,0.431,1
+/home/y_rajeshwar/final_year_project_29/dataset_new_split_clean/test/hair pulling/Screen Recording 2025-12-14 003138.mp4,hair pulling,hair pulling,0.556,1
+/home/y_rajeshwar/final_year_project_29/dataset_new_split_clean/test/hair pulling/Screen Recording 2025-12-14 004044.mp4,hair pulling,hair pulling,0.785,1
+/home/y_rajeshwar/final_year_project_29/dataset_new_split_clean/test/hair pulling/Screen Recording 2025-12-14 004204.mp4,hair pulling,hair pulling,0.812,1
+/home/y_rajeshwar/final_year_project_29/dataset_new_split_clean/test/hair pulling/Screen Recording 2025-12-14 004315.mp4,hair pulling,hair pulling,0.689,1
+/home/y_rajeshwar/final_year_project_29/dataset_new_split_clean/test/hair pulling/Screen Recording 2025-12-17 182742.mp4,hair pulling,slap,0.400,0
+/home/y_rajeshwar/final_year_project_29/dataset_new_split_clean/test/hair pulling/Screen Recording 2025-12-17 185534.mp4,hair pulling,hair pulling,0.921,1
+/home/y_rajeshwar/final_year_project_29/dataset_new_split_clean/test/hair pulling/Screen Recording 2025-12-17 185658.mp4,hair pulling,hair pulling,0.610,1
+/home/y_rajeshwar/final_year_project_29/dataset_new_split_clean/test/hair pulling/Screen Recording 2025-12-17 185913.mp4,hair pulling,hair pulling,0.727,1
+/home/y_rajeshwar/final_year_project_29/dataset_new_split_clean/test/hair pulling/Screen Recording 2025-12-17 191049.mp4,hair pulling,hair pulling,0.761,1
+/home/y_rajeshwar/final_year_project_29/dataset_new_split_clean/test/neck grabbing/ScreenRecording_12-12-2025 23-16-15_1.mov,neck grabbing,neck grabbing,0.745,1
+/home/y_rajeshwar/final_year_project_29/dataset_new_split_clean/test/neck grabbing/ScreenRecording_12-12-2025 23-21-09_1.mov,neck grabbing,neck grabbing,0.896,1
+/home/y_rajeshwar/final_year_project_29/dataset_new_split_clean/test/neck grabbing/ScreenRecording_12-12-2025 23-22-25_1.mov,neck grabbing,neck grabbing,0.344,1
+/home/y_rajeshwar/final_year_project_29/dataset_new_split_clean/test/neck grabbing/ScreenRecording_12-12-2025 24.mov,neck grabbing,neck grabbing,0.835,1
+/home/y_rajeshwar/final_year_project_29/dataset_new_split_clean/test/neck grabbing/ScreenRecording_12-13-2025 00-04-06_1.mov,neck grabbing,neck grabbing,0.607,1
+/home/y_rajeshwar/final_year_project_29/dataset_new_split_clean/test/neck grabbing/ScreenRecording_12-13-2025 00-08-56_1.mov,neck grabbing,shooting,0.561,0
+/home/y_rajeshwar/final_year_project_29/dataset_new_split_clean/test/neck grabbing/ScreenRecording_12-13-2025 00-10-54_1.mov,neck grabbing,neck grabbing,0.778,1
+/home/y_rajeshwar/final_year_project_29/dataset_new_split_clean/test/neck grabbing/rec13.mp4,neck grabbing,neck grabbing,0.399,1
+/home/y_rajeshwar/final_year_project_29/dataset_new_split_clean/test/neck grabbing/rec19.mp4,neck grabbing,neck grabbing,0.726,1
+/home/y_rajeshwar/final_year_project_29/dataset_new_split_clean/test/neck grabbing/rec5.mp4,neck grabbing,neck grabbing,0.924,1
+/home/y_rajeshwar/final_year_project_29/dataset_new_split_clean/test/neck grabbing/rec8.mp4,neck grabbing,Dragging,0.335,0
+/home/y_rajeshwar/final_year_project_29/dataset_new_split_clean/test/neck grabbing/rec9.mp4,neck grabbing,abuse,0.527,0
+/home/y_rajeshwar/final_year_project_29/dataset_new_split_clean/test/punch/Recording 2025-12-13 214012.mp4,punch,punch,0.376,1
+/home/y_rajeshwar/final_year_project_29/dataset_new_split_clean/test/punch/Screen Recording 2025-12-13 213307.mp4,punch,punch,0.732,1
+"/home/y_rajeshwar/final_year_project_29/dataset_new_split_clean/test/robbery/Footage of jewellery store robbery - CP24 (720p, h264).mp4",robbery,robbery,0.559,1
+"/home/y_rajeshwar/final_year_project_29/dataset_new_split_clean/test/robbery/How To Survive A Bank Robbery - Law By Mike (720p, h264).mp4",robbery,robbery,0.302,1
+"/home/y_rajeshwar/final_year_project_29/dataset_new_split_clean/test/robbery/Man Fails to Break Into Jewelry Display Case With Brick - NowThis Impact (720p, h264).mp4",robbery,robbery,0.819,1
+"/home/y_rajeshwar/final_year_project_29/dataset_new_split_clean/test/robbery/Mobile Stolen in Sleeper Coach #shorts #shortsfeed #train #railway #traintravel #trending #ytshorts - Train Gateway (720p, h264).mp4",robbery,hair pulling,0.587,0
+/home/y_rajeshwar/final_year_project_29/dataset_new_split_clean/test/robbery/Screen_Recording_20251211_182338_YouTube_1.mp4,robbery,robbery,0.500,1
+/home/y_rajeshwar/final_year_project_29/dataset_new_split_clean/test/robbery/Screen_Recording_20251211_182437_YouTube.mp4,robbery,robbery,0.966,1
+/home/y_rajeshwar/final_year_project_29/dataset_new_split_clean/test/robbery/Screen_Recording_20251212_170139_YouTube_1.mp4,robbery,robbery,0.323,1
+"/home/y_rajeshwar/final_year_project_29/dataset_new_split_clean/test/robbery/Thieves Caught on Video Snatching Mobile Phones From Moving Train... #accident #thief #oneindia - Oneindia News (720p, h264).mp4",robbery,snatching,0.923,0
+"/home/y_rajeshwar/final_year_project_29/dataset_new_split_clean/test/robbery/Video shows thieves robbing driver on freeway after South LA crash - ABC7 (720p, h264) (1).mp4",robbery,robbery,0.274,1
+/home/y_rajeshwar/final_year_project_29/dataset_new_split_clean/test/shooting/ScreenRecording_12-11-2025 25.MOV,shooting,shooting,0.955,1
+/home/y_rajeshwar/final_year_project_29/dataset_new_split_clean/test/shooting/ScreenRecording_12-14-2025 00-42-32_1 2.MOV,shooting,shooting,0.961,1
+/home/y_rajeshwar/final_year_project_29/dataset_new_split_clean/test/shooting/ScreenRecording_12-14-2025 00-44-52_1.mov,shooting,shooting,0.654,1
+/home/y_rajeshwar/final_year_project_29/dataset_new_split_clean/test/shooting/ScreenRecording_12-14-2025 00-45-36_1.MP4,shooting,abuse,0.705,0
+/home/y_rajeshwar/final_year_project_29/dataset_new_split_clean/test/shooting/ScreenRecording_12-14-2025 00-46-11_1.mov,shooting,shooting,0.918,1
+/home/y_rajeshwar/final_year_project_29/dataset_new_split_clean/test/shooting/ScreenRecording_12-14-2025 00-47-29_1.mov,shooting,shooting,0.494,1
+/home/y_rajeshwar/final_year_project_29/dataset_new_split_clean/test/shooting/ScreenRecording_12-14-2025 00-54-25_1.mov,shooting,shooting,0.870,1
+/home/y_rajeshwar/final_year_project_29/dataset_new_split_clean/test/shooting/ScreenRecording_12-14-2025 00-54-59_1.mov,shooting,shooting,0.900,1
+/home/y_rajeshwar/final_year_project_29/dataset_new_split_clean/test/shooting/ScreenRecording_12-14-2025 01-11-02_1.mov,shooting,shooting,0.946,1
+/home/y_rajeshwar/final_year_project_29/dataset_new_split_clean/test/shooting/ScreenRecording_12-14-2025 01-20-05_1.mov,shooting,shooting,0.918,1
+/home/y_rajeshwar/final_year_project_29/dataset_new_split_clean/test/shooting/ScreenRecording_12-14-2025 09-09-27_1.mov,shooting,shooting,0.621,1
+/home/y_rajeshwar/final_year_project_29/dataset_new_split_clean/test/shooting/ScreenRecording_12-14-2025 09-13-17_1.mov,shooting,shooting,0.953,1
+/home/y_rajeshwar/final_year_project_29/dataset_new_split_clean/test/shooting/ScreenRecording_12-14-2025 09-17-20_1.mov,shooting,shooting,0.861,1
+/home/y_rajeshwar/final_year_project_29/dataset_new_split_clean/test/slap/Recording 2025-12-13 134026.mp4,slap,slap,0.508,1
+/home/y_rajeshwar/final_year_project_29/dataset_new_split_clean/test/slap/Recording 2025-12-13 135559.mp4,slap,slap,0.829,1
+/home/y_rajeshwar/final_year_project_29/dataset_new_split_clean/test/slap/Recording 2025-12-13 140146.mp4,slap,slap,0.492,1
+/home/y_rajeshwar/final_year_project_29/dataset_new_split_clean/test/slap/Recording 2025-12-13 140632.mp4,slap,slap,0.573,1
+/home/y_rajeshwar/final_year_project_29/dataset_new_split_clean/test/slap/Recording 2025-12-13 140744.mp4,slap,slap,0.865,1
+/home/y_rajeshwar/final_year_project_29/dataset_new_split_clean/test/slap/Recording 2025-12-13 140932.mp4,slap,slap,0.398,1
+/home/y_rajeshwar/final_year_project_29/dataset_new_split_clean/test/slap/Recording 2025-12-13 141032.mp4,slap,slap,0.894,1
+/home/y_rajeshwar/final_year_project_29/dataset_new_split_clean/test/slap/Recording 2025-12-13 141149.mp4,slap,Dragging,0.497,0
+/home/y_rajeshwar/final_year_project_29/dataset_new_split_clean/test/slap/Recording 2025-12-13 153918.mp4,slap,slap,0.891,1
+/home/y_rajeshwar/final_year_project_29/dataset_new_split_clean/test/slap/Recording 2025-12-13 154920.mp4,slap,hair pulling,0.294,0
+/home/y_rajeshwar/final_year_project_29/dataset_new_split_clean/test/snatching/Screenrecorder-2025-12-14-19-20-50-719.mp4,snatching,snatching,0.636,1
+/home/y_rajeshwar/final_year_project_29/dataset_new_split_clean/test/snatching/Screenrecorder-2025-12-17-23-03-59-484.mp4,snatching,snatching,0.393,1
+/home/y_rajeshwar/final_year_project_29/dataset_new_split_clean/test/snatching/VID_20251214_175543.mp4,snatching,Dragging,0.446,0
+/home/y_rajeshwar/final_year_project_29/dataset_new_split_clean/test/snatching/VID_20251214_180321.mp4,snatching,snatching,0.874,1
+/home/y_rajeshwar/final_year_project_29/dataset_new_split_clean/test/snatching/VID_20251214_183348.mp4,snatching,snatching,0.366,1
+/home/y_rajeshwar/final_year_project_29/dataset_new_split_clean/test/snatching/VID_20251214_183440.mp4,snatching,snatching,0.891,1
+/home/y_rajeshwar/final_year_project_29/dataset_new_split_clean/test/snatching/VID_20251214_183817.mp4,snatching,snatching,0.682,1
+/home/y_rajeshwar/final_year_project_29/dataset_new_split_clean/test/snatching/VID_20251215_090439.mp4,snatching,snatching,0.552,1
+/home/y_rajeshwar/final_year_project_29/dataset_new_split_clean/test/snatching/VID_20251215_093531.mp4,snatching,snatching,0.918,1
+/home/y_rajeshwar/final_year_project_29/dataset_new_split_clean/test/snatching/VID_20251217_225329.mp4,snatching,Pushing,0.337,0
+/home/y_rajeshwar/final_year_project_29/dataset_new_split_clean/test/snatching/VID_20251217_225520.mp4,snatching,snatching,0.430,1
+/home/y_rajeshwar/final_year_project_29/dataset_new_split_clean/test/snatching/VID_20251217_225628.mp4,snatching,stabbing,0.740,0
+/home/y_rajeshwar/final_year_project_29/dataset_new_split_clean/test/snatching/VID_20251217_225749.mp4,snatching,abuse,0.162,0
+/home/y_rajeshwar/final_year_project_29/dataset_new_split_clean/test/stabbing/108(1).mp4,stabbing,stabbing,0.944,1
+/home/y_rajeshwar/final_year_project_29/dataset_new_split_clean/test/stabbing/52.mp4,stabbing,stabbing,0.863,1
+/home/y_rajeshwar/final_year_project_29/dataset_new_split_clean/test/stabbing/56 (1).mp4,stabbing,stabbing,0.831,1
+/home/y_rajeshwar/final_year_project_29/dataset_new_split_clean/test/stabbing/60.mp4,stabbing,stabbing,0.922,1
+/home/y_rajeshwar/final_year_project_29/dataset_new_split_clean/test/stabbing/61(1).mp4,stabbing,stabbing,0.832,1
+/home/y_rajeshwar/final_year_project_29/dataset_new_split_clean/test/stabbing/61.mp4,stabbing,stabbing,0.730,1
+/home/y_rajeshwar/final_year_project_29/dataset_new_split_clean/test/stabbing/72.mp4,stabbing,stabbing,0.919,1
+/home/y_rajeshwar/final_year_project_29/dataset_new_split_clean/test/stabbing/KRAV MAGA knife attack scenarios - YouTube - Google Chrome 2026-08-31 22-43-29.mp4,stabbing,Pushing,0.371,0
+/home/y_rajeshwar/final_year_project_29/dataset_new_split_clean/test/stabbing/Untitled - Made with Clipchamp (3).mp4,stabbing,stabbing,0.945,1
+/home/y_rajeshwar/final_year_project_29/dataset_new_split_clean/test/stabbing/Untitled video - Made with Clipchamp (1).mp4,stabbing,punch,0.407,0
+/home/y_rajeshwar/final_year_project_29/dataset_new_split_clean/test/stabbing/Untitled video - Made with Clipchamp (11).mp4,stabbing,stabbing,0.502,1
+/home/y_rajeshwar/final_year_project_29/dataset_new_split_clean/test/stabbing/Untitled video - Made with Clipchamp (14).mp4,stabbing,abuse,0.254,0
+/home/y_rajeshwar/final_year_project_29/dataset_new_split_clean/test/stabbing/We Put Women in Realistic Self Defense Scenarios - YouTube - Google Chrome 2026-08-31 22-30-49.mp4,stabbing,stabbing,0.489,1
+/home/y_rajeshwar/final_year_project_29/dataset_new_split_clean/test/stabbing/video - Made with Clipchamp (2).mp4,stabbing,stabbing,0.721,1
+/home/y_rajeshwar/final_year_project_29/dataset_new_split_clean/test/stabbing/video - Made with Clipchamp (7).mp4,stabbing,stabbing,0.850,1

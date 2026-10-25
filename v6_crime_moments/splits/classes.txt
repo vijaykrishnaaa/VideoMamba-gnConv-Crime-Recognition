@@ -1,0 +1,13 @@
+0	Abuse
+1	Arrest
+2	Arson
+3	Assault
+4	Burglary
+5	Explosion
+6	Fighting
+7	RoadAccidents
+8	Robbery
+9	Shooting
+10	Shoplifting
+11	Stealing
+12	Vandalism

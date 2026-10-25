@@ -1,0 +1,456 @@
+===== JOB 93091.amritahpc on node02 started Sat Oct 17 20:42:09 IST 2026 | FOLD=3 INIT=ucf101 =====
+Sat Oct 17 20:42:10 2026       
++-----------------------------------------------------------------------------+
+| NVIDIA-SMI 510.47.03    Driver Version: 510.47.03    CUDA Version: 11.6     |
+|-------------------------------+----------------------+----------------------+
+| GPU  Name        Persistence-M| Bus-Id        Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp  Perf  Pwr:Usage/Cap|         Memory-Usage | GPU-Util  Compute M. |
+|                               |                      |               MIG M. |
+|===============================+======================+======================|
+|   0  Tesla V100-PCIE...  Off  | 00000000:3B:00.0 Off |                    0 |
+| N/A   32C    P0    35W / 250W |      0MiB / 16384MiB |      2%      Default |
+|                               |                      |                  N/A |
++-------------------------------+----------------------+----------------------+
+                                                                               
++-----------------------------------------------------------------------------+
+| Processes:                                                                  |
+|  GPU   GI   CI        PID   Type   Process name                  GPU Memory |
+|        ID   ID                                                   Usage      |
+|=============================================================================|
+|  No running processes found                                                 |
++-----------------------------------------------------------------------------+
+======================================================================
+VideoMamba V5 — UCF-Crime recognition, fold 3 of 4, init ucf101
+======================================================================
+  Started: 2026-10-17 20:42:26
+  Run folder: /home/y_rajeshwar/vlil_40/v5_ucf_crime/runs/fold3_ucf101
+  GPU: Tesla V100-PCIE-16GB | free 16.6 / 16.9 GB | PyTorch 2.1.1+cu118
+
+  ARCHITECTURE:
+    Backbone:        VideoMamba-Small (24 bidirectional Mamba layers, d=384)
+    Spatial module:  HorNet gnConv2D (order=5, kernels [3,5,7,1], GhostModule, zero-init)
+                     in layers 16-23, applied per frame on the 14x14 grid
+    Backbone file:   /home/y_rajeshwar/vlil_40/v5_ucf_crime/mamba_simple_v7.py
+  TRANSFER: Kinetics-400 -> UCF-101 (Mamba weights) -> UCF-Crime; gnConv starts at zero
+
+  HYPERPARAMETERS:
+    Frames/clip 8 | batch 2 x accum 8 = 16 | epochs 40 (warmup 3, early stop patience 10)
+    LR backbone 1e-05 | LR gnConv 0.0001 | LR head 0.001 | cosine schedule
+    AdamW weight decay 0.05 (no decay on norms/biases/A_log/D) | grad clip 1.0
+  REGULARIZATION (anti-overfitting):
+    Head dropout 0.5 (applied) | stochastic depth 0.2 | label smoothing 0.1
+    Mixup alpha 0.3 | EMA decay 0.995 | frozen layers 0-15 in eval mode
+  DATA AUGMENTATION (same random draw for all frames of a clip):
+    RandomResizedCrop scale (0.4, 1.0) ratio (0.75, 1.33) over the full frame | h-flip p=0.5
+    Colour jitter (0.3, 0.3, 0.3, 0.05) | grayscale p=0.1 | erasing p=0.25 (0.02, 0.2)
+    Temporal: 8 segments over the whole video, random cached frame inside each segment
+  EVALUATION:
+    Validation (model selection): 4 clips x 3 full-width crops, raw + EMA weights
+    Test (once, at the end):      8 clips x 3 full-width crops
+    Precision: float32 (AMP=False)
+======================================================================
+
+  DATASET (from /home/y_rajeshwar/vlil_40/v5_ucf_crime/splits/fold3):
+  Class               Train    Val   Test
+  Abuse                  32      6     12
+  Arrest                 32      6     12
+  Arson                  32      6     12
+  Assault                32      6     12
+  Burglary               32      6     12
+  Explosion              32      6     12
+  Fighting               32      6     12
+  Normal                 32      6     12
+  RoadAccidents          32      6     12
+  Robbery                32      6     12
+  Shooting               32      6     12
+  Shoplifting            32      6     12
+  Stealing               32      6     12
+  Vandalism              32      6     12
+  TOTAL                 448     84    168
+  [CHECK] gnConv per-frame isolation: OK (change in frame 3 -> max output change: frame 3 = 0.00599, other frames = 0)
+  [CHECK] cls token untouched: forward scan OK, backward scan OK
+Use checkpoint: False
+Checkpoint number: 0
+
+  Loading ucf101 checkpoint: /home/y_rajeshwar/vlil_40/v1_ucf101/checkpoints_ucf101/best_ucf101_v6.pth
+  Loaded 414 tensors | skipped: 1152 gnConv (old reshape) + 2 head (101 classes)
+  Missing (expected: new gnConv layers 16-23 + new head): 354 | unexpected: 0
+
+  ==================================================================
+  MODEL PARAMETER BREAKDOWN (V5 / train_v5)
+  ------------------------------------------------------------------
+  Component                         Total    Trainable       Frozen
+  ------------------------------------------------------------------
+  Patch Embedding                 374,400            0      374,400
+  Mamba SSM Layers             25,030,656    8,343,552   16,687,104
+  gnConv2D Modules (L16-23)    90,817,536   90,817,536            0
+  Classification Head               5,390        5,390            0
+  Norm Layers                       9,600        3,456        6,144
+  ------------------------------------------------------------------
+  TOTAL (active)              116,237,582   99,169,934   17,067,648
+                                   (100%)      (85.3%)      (14.7%)
+  ------------------------------------------------------------------
+  Removed: gnConv2D in frozen layers 0-15: 181,635,072 params
+           (zero-init + frozen in V1-V3, so they always output exactly 0)
+  V1-V3 total incl. those inactive modules: 297,872,654
+  One gnConv2D module: 5,676,096 params (2 per layer: forward + backward scan)
+  ==================================================================
+
+  ==================================================================
+  COMPUTE PER CLIP (8 x 224 x 224), measured
+  ------------------------------------------------------------------
+  Patch embedding (Conv3d)                      0.46 GMACs
+  Mamba linear projections                     37.94 GMACs
+  Mamba Conv1d                                  0.23 GMACs
+  Selective scan (estimate)                     4.16 GMACs
+  gnConv2D (layers 16-23)                     142.23 GMACs
+  Classification head                           0.00 GMACs
+  ------------------------------------------------------------------
+  TOTAL                                       185.03 GMACs  (= 370.1 GFLOPs)
+  Removed inactive gnConv (layers 0-15) would have added 284.5 GMACs for an output of exactly 0
+  Inference latency (batch 1, fp32, this V100, shared GPU): 58 ms / clip
+  ==================================================================
+
+  Optimizer groups:
+    backbone              8,110,080 params | lr 1e-05 | wd 0.05
+    backbone_no_decay       236,928 params | lr 1e-05 | wd 0.0
+    gnconv               90,709,248 params | lr 1e-04 | wd 0.05
+    gnconv_no_decay         108,288 params | lr 1e-04 | wd 0.0
+    head                      5,376 params | lr 1e-03 | wd 0.05
+    head_no_decay                14 params | lr 1e-03 | wd 0.0
+
+  Training: 224 batches/epoch, validation on 84 videos
+  [CHECK] first training step OK (loss 2.659, GPU memory 5.5 GB)
+    epoch 1 [train]  25% | loss 2.7197 | acc 9.5% | 22s
+    epoch 1 [train]  50% | loss 2.7314 | acc 8.2% | 39s
+    epoch 1 [train]  75% | loss 2.7096 | acc 9.2% | 56s
+    epoch 1 [train] 100% | loss 2.7005 | acc 8.6% | 73s
+  Epoch  1/40: loss 2.7005 | train 8.6% | val raw 13.1% (loss 2.593) | val EMA 13.1% (loss 2.601) | gap -4.5% | lr 3.3e-06/3.3e-05/3.3e-04 | 165s
+    val per class (raw): Abuse 0% | Arrest 17% | Arson 0% | Assault 0% | Burglary 0% | Explosion 0% | Fighting 0% | Normal 17% | RoadAccide 83% | Robbery 0% | Shooting 17% | Shopliftin 33% | Stealing 17% | Vandalism 0%
+    >>> NEW BEST: 13.10% (raw weights) -> /home/y_rajeshwar/vlil_40/v5_ucf_crime/runs/fold3_ucf101/checkpoints/best_model.pth
+    peak GPU memory: 6.0 GB
+    epoch 2 [train]  25% | loss 2.5788 | acc 11.8% | 17s
+    epoch 2 [train]  50% | loss 2.5897 | acc 12.9% | 34s
+    epoch 2 [train]  75% | loss 2.5875 | acc 12.7% | 51s
+    epoch 2 [train] 100% | loss 2.5784 | acc 13.5% | 68s
+  Epoch  2/40: loss 2.5784 | train 13.5% | val raw 22.6% (loss 2.448) | val EMA 22.6% (loss 2.476) | gap -9.2% | lr 6.7e-06/6.7e-05/6.7e-04 | 160s
+    val per class (raw): Abuse 0% | Arrest 0% | Arson 0% | Assault 50% | Burglary 0% | Explosion 17% | Fighting 50% | Normal 17% | RoadAccide 67% | Robbery 0% | Shooting 17% | Shopliftin 33% | Stealing 67% | Vandalism 0%
+    >>> NEW BEST: 22.62% (raw weights) -> /home/y_rajeshwar/vlil_40/v5_ucf_crime/runs/fold3_ucf101/checkpoints/best_model.pth
+    epoch 3 [train]  25% | loss 2.4824 | acc 16.8% | 17s
+    epoch 3 [train]  50% | loss 2.4703 | acc 18.5% | 34s
+    epoch 3 [train]  75% | loss 2.4637 | acc 18.3% | 51s
+    epoch 3 [train] 100% | loss 2.4560 | acc 20.1% | 68s
+  Epoch  3/40: loss 2.4560 | train 20.1% | val raw 29.8% (loss 2.247) | val EMA 25.0% (loss 2.325) | gap -9.7% | lr 1.0e-05/1.0e-04/1.0e-03 | 159s
+    val per class (raw): Abuse 33% | Arrest 0% | Arson 67% | Assault 33% | Burglary 0% | Explosion 17% | Fighting 33% | Normal 17% | RoadAccide 83% | Robbery 0% | Shooting 17% | Shopliftin 50% | Stealing 50% | Vandalism 17%
+    >>> NEW BEST: 29.76% (raw weights) -> /home/y_rajeshwar/vlil_40/v5_ucf_crime/runs/fold3_ucf101/checkpoints/best_model.pth
+    epoch 4 [train]  25% | loss 2.3145 | acc 30.7% | 17s
+    epoch 4 [train]  50% | loss 2.2936 | acc 30.6% | 34s
+    epoch 4 [train]  75% | loss 2.2907 | acc 31.7% | 51s
+    epoch 4 [train] 100% | loss 2.3066 | acc 30.1% | 68s
+  Epoch  4/40: loss 2.3066 | train 30.1% | val raw 36.9% (loss 2.094) | val EMA 35.7% (loss 2.152) | gap -6.8% | lr 1.0e-05/1.0e-04/1.0e-03 | 159s
+    val per class (raw): Abuse 33% | Arrest 0% | Arson 50% | Assault 33% | Burglary 0% | Explosion 17% | Fighting 83% | Normal 17% | RoadAccide 100% | Robbery 0% | Shooting 0% | Shopliftin 83% | Stealing 83% | Vandalism 17%
+    >>> NEW BEST: 36.90% (raw weights) -> /home/y_rajeshwar/vlil_40/v5_ucf_crime/runs/fold3_ucf101/checkpoints/best_model.pth
+    epoch 5 [train]  25% | loss 2.3464 | acc 30.9% | 17s
+    epoch 5 [train]  50% | loss 2.3457 | acc 32.4% | 34s
+    epoch 5 [train]  75% | loss 2.4059 | acc 27.8% | 51s
+    epoch 5 [train] 100% | loss 2.4087 | acc 25.4% | 68s
+  Epoch  5/40: loss 2.4087 | train 25.4% | val raw 19.0% (loss 2.322) | val EMA 29.8% (loss 2.230) | gap -4.4% | lr 1.0e-05/1.0e-04/1.0e-03 | 155s
+    val per class (ema): Abuse 33% | Arrest 0% | Arson 17% | Assault 33% | Burglary 17% | Explosion 33% | Fighting 17% | Normal 17% | RoadAccide 67% | Robbery 17% | Shooting 0% | Shopliftin 83% | Stealing 67% | Vandalism 17%
+    (no improvement 1/10; best 36.90% at epoch 4)
+    epoch 6 [train]  25% | loss 2.2964 | acc 31.1% | 17s
+    epoch 6 [train]  50% | loss 2.2479 | acc 31.0% | 34s
+    epoch 6 [train]  75% | loss 2.2354 | acc 31.5% | 51s
+    epoch 6 [train] 100% | loss 2.2704 | acc 30.1% | 68s
+  Epoch  6/40: loss 2.2704 | train 30.1% | val raw 34.5% (loss 2.212) | val EMA 34.5% (loss 2.177) | gap -4.4% | lr 9.9e-06/9.9e-05/9.9e-04 | 155s
+    val per class (ema): Abuse 33% | Arrest 0% | Arson 33% | Assault 33% | Burglary 33% | Explosion 33% | Fighting 67% | Normal 17% | RoadAccide 67% | Robbery 0% | Shooting 0% | Shopliftin 83% | Stealing 67% | Vandalism 17%
+    (no improvement 2/10; best 36.90% at epoch 4)
+    epoch 7 [train]  25% | loss 2.2229 | acc 31.2% | 17s
+    epoch 7 [train]  50% | loss 2.2476 | acc 29.3% | 34s
+    epoch 7 [train]  75% | loss 2.2228 | acc 31.4% | 51s
+    epoch 7 [train] 100% | loss 2.2046 | acc 33.1% | 68s
+  Epoch  7/40: loss 2.2046 | train 33.1% | val raw 36.9% (loss 1.983) | val EMA 34.5% (loss 2.032) | gap -3.8% | lr 9.8e-06/9.8e-05/9.8e-04 | 159s
+    val per class (raw): Abuse 33% | Arrest 0% | Arson 67% | Assault 33% | Burglary 0% | Explosion 33% | Fighting 100% | Normal 17% | RoadAccide 67% | Robbery 33% | Shooting 0% | Shopliftin 67% | Stealing 50% | Vandalism 17%
+    >>> NEW BEST: 36.90% (raw weights) -> /home/y_rajeshwar/vlil_40/v5_ucf_crime/runs/fold3_ucf101/checkpoints/best_model.pth
+    epoch 8 [train]  25% | loss 2.2194 | acc 38.5% | 17s
+    epoch 8 [train]  50% | loss 2.1352 | acc 38.1% | 34s
+    epoch 8 [train]  75% | loss 2.1404 | acc 38.6% | 51s
+    epoch 8 [train] 100% | loss 2.0998 | acc 39.7% | 68s
+  Epoch  8/40: loss 2.0998 | train 39.7% | val raw 36.9% (loss 1.917) | val EMA 38.1% (loss 1.977) | gap 1.6% | lr 9.7e-06/9.7e-05/9.7e-04 | 159s
+    val per class (ema): Abuse 33% | Arrest 17% | Arson 50% | Assault 33% | Burglary 17% | Explosion 17% | Fighting 83% | Normal 17% | RoadAccide 67% | Robbery 67% | Shooting 0% | Shopliftin 67% | Stealing 50% | Vandalism 17%
+    >>> NEW BEST: 38.10% (ema weights) -> /home/y_rajeshwar/vlil_40/v5_ucf_crime/runs/fold3_ucf101/checkpoints/best_model.pth
+    epoch 9 [train]  25% | loss 1.9701 | acc 46.4% | 17s
+    epoch 9 [train]  50% | loss 2.0251 | acc 42.7% | 34s
+    epoch 9 [train]  75% | loss 2.0579 | acc 41.6% | 51s
+    epoch 9 [train] 100% | loss 2.0650 | acc 41.4% | 68s
+  Epoch  9/40: loss 2.0650 | train 41.4% | val raw 39.3% (loss 1.867) | val EMA 34.5% (loss 1.890) | gap 2.1% | lr 9.6e-06/9.6e-05/9.6e-04 | 159s
+    val per class (raw): Abuse 33% | Arrest 17% | Arson 33% | Assault 50% | Burglary 33% | Explosion 50% | Fighting 83% | Normal 33% | RoadAccide 33% | Robbery 50% | Shooting 0% | Shopliftin 67% | Stealing 67% | Vandalism 0%
+    >>> NEW BEST: 39.29% (raw weights) -> /home/y_rajeshwar/vlil_40/v5_ucf_crime/runs/fold3_ucf101/checkpoints/best_model.pth
+    epoch 10 [train]  25% | loss 2.0178 | acc 40.2% | 17s
+    epoch 10 [train]  50% | loss 1.9726 | acc 41.1% | 34s
+    epoch 10 [train]  75% | loss 1.9998 | acc 39.9% | 51s
+    epoch 10 [train] 100% | loss 2.0087 | acc 40.0% | 68s
+  Epoch 10/40: loss 2.0087 | train 40.0% | val raw 33.3% (loss 1.903) | val EMA 38.1% (loss 1.878) | gap 1.9% | lr 9.4e-06/9.4e-05/9.4e-04 | 155s
+    val per class (ema): Abuse 33% | Arrest 17% | Arson 67% | Assault 33% | Burglary 17% | Explosion 33% | Fighting 83% | Normal 33% | RoadAccide 50% | Robbery 50% | Shooting 0% | Shopliftin 67% | Stealing 50% | Vandalism 0%
+    (no improvement 1/10; best 39.29% at epoch 9)
+    epoch 11 [train]  25% | loss 1.9433 | acc 48.0% | 17s
+    epoch 11 [train]  50% | loss 1.9272 | acc 46.1% | 34s
+    epoch 11 [train]  75% | loss 2.0137 | acc 41.7% | 51s
+    epoch 11 [train] 100% | loss 2.0104 | acc 42.0% | 68s
+  Epoch 11/40: loss 2.0104 | train 42.0% | val raw 34.5% (loss 1.902) | val EMA 38.1% (loss 1.867) | gap 3.9% | lr 9.1e-06/9.1e-05/9.1e-04 | 155s
+    val per class (ema): Abuse 33% | Arrest 17% | Arson 67% | Assault 33% | Burglary 17% | Explosion 17% | Fighting 83% | Normal 33% | RoadAccide 67% | Robbery 50% | Shooting 0% | Shopliftin 67% | Stealing 50% | Vandalism 0%
+    (no improvement 2/10; best 39.29% at epoch 9)
+    epoch 12 [train]  25% | loss 1.9111 | acc 44.5% | 17s
+    epoch 12 [train]  50% | loss 1.9533 | acc 42.2% | 34s
+    epoch 12 [train]  75% | loss 1.9024 | acc 44.4% | 51s
+    epoch 12 [train] 100% | loss 1.9088 | acc 45.2% | 68s
+  Epoch 12/40: loss 1.9088 | train 45.2% | val raw 33.3% (loss 1.891) | val EMA 39.3% (loss 1.856) | gap 5.9% | lr 8.9e-06/8.9e-05/8.9e-04 | 159s
+    val per class (ema): Abuse 33% | Arrest 17% | Arson 67% | Assault 50% | Burglary 17% | Explosion 33% | Fighting 67% | Normal 33% | RoadAccide 67% | Robbery 50% | Shooting 0% | Shopliftin 67% | Stealing 50% | Vandalism 0%
+    >>> NEW BEST: 39.29% (ema weights) -> /home/y_rajeshwar/vlil_40/v5_ucf_crime/runs/fold3_ucf101/checkpoints/best_model.pth
+    epoch 13 [train]  25% | loss 1.9655 | acc 45.7% | 17s
+    epoch 13 [train]  50% | loss 1.9916 | acc 44.9% | 34s
+    epoch 13 [train]  75% | loss 2.0141 | acc 44.9% | 51s
+    epoch 13 [train] 100% | loss 1.9774 | acc 45.2% | 68s
+  Epoch 13/40: loss 1.9774 | train 45.2% | val raw 36.9% (loss 1.871) | val EMA 38.1% (loss 1.872) | gap 7.1% | lr 8.6e-06/8.6e-05/8.6e-04 | 155s
+    val per class (ema): Abuse 33% | Arrest 33% | Arson 67% | Assault 50% | Burglary 17% | Explosion 33% | Fighting 50% | Normal 33% | RoadAccide 67% | Robbery 33% | Shooting 0% | Shopliftin 67% | Stealing 50% | Vandalism 0%
+    (no improvement 1/10; best 39.29% at epoch 12)
+    epoch 14 [train]  25% | loss 1.7783 | acc 49.6% | 17s
+    epoch 14 [train]  50% | loss 1.8384 | acc 47.6% | 34s
+    epoch 14 [train]  75% | loss 1.8743 | acc 46.4% | 51s
+    epoch 14 [train] 100% | loss 1.8807 | acc 46.3% | 68s
+  Epoch 14/40: loss 1.8807 | train 46.3% | val raw 36.9% (loss 1.849) | val EMA 36.9% (loss 1.842) | gap 9.4% | lr 8.3e-06/8.3e-05/8.3e-04 | 154s
+    val per class (ema): Abuse 33% | Arrest 33% | Arson 50% | Assault 50% | Burglary 17% | Explosion 50% | Fighting 33% | Normal 50% | RoadAccide 67% | Robbery 33% | Shooting 0% | Shopliftin 67% | Stealing 33% | Vandalism 0%
+    (no improvement 2/10; best 39.29% at epoch 12)
+    epoch 15 [train]  25% | loss 1.8095 | acc 54.6% | 17s
+    epoch 15 [train]  50% | loss 1.8260 | acc 52.6% | 34s
+    epoch 15 [train]  75% | loss 1.8440 | acc 50.2% | 51s
+    epoch 15 [train] 100% | loss 1.8649 | acc 47.4% | 68s
+  Epoch 15/40: loss 1.8649 | train 47.4% | val raw 34.5% (loss 1.834) | val EMA 36.9% (loss 1.836) | gap 10.5% | lr 8.0e-06/8.0e-05/8.0e-04 | 155s
+    val per class (ema): Abuse 33% | Arrest 33% | Arson 50% | Assault 50% | Burglary 0% | Explosion 50% | Fighting 33% | Normal 67% | RoadAccide 50% | Robbery 33% | Shooting 0% | Shopliftin 67% | Stealing 50% | Vandalism 0%
+    (no improvement 3/10; best 39.29% at epoch 12)
+    epoch 16 [train]  25% | loss 1.9138 | acc 41.5% | 17s
+    epoch 16 [train]  50% | loss 1.8689 | acc 48.7% | 34s
+    epoch 16 [train]  75% | loss 1.8621 | acc 48.5% | 51s
+    epoch 16 [train] 100% | loss 1.8347 | acc 50.2% | 68s
+  Epoch 16/40: loss 1.8347 | train 50.2% | val raw 38.1% (loss 1.857) | val EMA 34.5% (loss 1.822) | gap 12.1% | lr 7.6e-06/7.6e-05/7.6e-04 | 154s
+    val per class (raw): Abuse 17% | Arrest 33% | Arson 50% | Assault 33% | Burglary 0% | Explosion 50% | Fighting 67% | Normal 67% | RoadAccide 67% | Robbery 33% | Shooting 0% | Shopliftin 67% | Stealing 50% | Vandalism 0%
+    (no improvement 4/10; best 39.29% at epoch 12)
+    epoch 17 [train]  25% | loss 1.7221 | acc 53.1% | 17s
+    epoch 17 [train]  50% | loss 1.7504 | acc 55.4% | 34s
+    epoch 17 [train]  75% | loss 1.7399 | acc 55.3% | 51s
+    epoch 17 [train] 100% | loss 1.7815 | acc 53.1% | 68s
+  Epoch 17/40: loss 1.7815 | train 53.1% | val raw 36.9% (loss 1.814) | val EMA 39.3% (loss 1.822) | gap 13.8% | lr 7.3e-06/7.3e-05/7.3e-04 | 159s
+    val per class (ema): Abuse 33% | Arrest 33% | Arson 50% | Assault 33% | Burglary 17% | Explosion 50% | Fighting 67% | Normal 67% | RoadAccide 67% | Robbery 33% | Shooting 0% | Shopliftin 67% | Stealing 33% | Vandalism 0%
+    >>> NEW BEST: 39.29% (ema weights) -> /home/y_rajeshwar/vlil_40/v5_ucf_crime/runs/fold3_ucf101/checkpoints/best_model.pth
+    epoch 18 [train]  25% | loss 1.7638 | acc 49.6% | 17s
+    epoch 18 [train]  50% | loss 1.8596 | acc 48.2% | 34s
+    epoch 18 [train]  75% | loss 1.8198 | acc 49.5% | 51s
+    epoch 18 [train] 100% | loss 1.8075 | acc 49.8% | 68s
+  Epoch 18/40: loss 1.8075 | train 49.8% | val raw 34.5% (loss 1.789) | val EMA 36.9% (loss 1.806) | gap 12.9% | lr 6.9e-06/6.9e-05/6.9e-04 | 155s
+    val per class (ema): Abuse 33% | Arrest 33% | Arson 33% | Assault 50% | Burglary 17% | Explosion 50% | Fighting 33% | Normal 67% | RoadAccide 67% | Robbery 33% | Shooting 0% | Shopliftin 67% | Stealing 33% | Vandalism 0%
+    (no improvement 1/10; best 39.29% at epoch 17)
+    epoch 19 [train]  25% | loss 1.7392 | acc 62.0% | 17s
+    epoch 19 [train]  50% | loss 1.7580 | acc 55.8% | 34s
+    epoch 19 [train]  75% | loss 1.7755 | acc 53.6% | 51s
+    epoch 19 [train] 100% | loss 1.7850 | acc 52.8% | 68s
+  Epoch 19/40: loss 1.7850 | train 52.8% | val raw 36.9% (loss 1.794) | val EMA 39.3% (loss 1.792) | gap 13.5% | lr 6.5e-06/6.5e-05/6.5e-04 | 159s
+    val per class (ema): Abuse 33% | Arrest 33% | Arson 33% | Assault 50% | Burglary 17% | Explosion 50% | Fighting 50% | Normal 67% | RoadAccide 67% | Robbery 50% | Shooting 0% | Shopliftin 67% | Stealing 33% | Vandalism 0%
+    >>> NEW BEST: 39.29% (ema weights) -> /home/y_rajeshwar/vlil_40/v5_ucf_crime/runs/fold3_ucf101/checkpoints/best_model.pth
+    epoch 20 [train]  25% | loss 1.7841 | acc 53.0% | 17s
+    epoch 20 [train]  50% | loss 1.7366 | acc 56.2% | 34s
+    epoch 20 [train]  75% | loss 1.7530 | acc 54.6% | 51s
+    epoch 20 [train] 100% | loss 1.7761 | acc 53.2% | 68s
+  Epoch 20/40: loss 1.7761 | train 53.2% | val raw 38.1% (loss 1.806) | val EMA 36.9% (loss 1.791) | gap 15.1% | lr 6.1e-06/6.1e-05/6.1e-04 | 155s
+    val per class (raw): Abuse 33% | Arrest 33% | Arson 50% | Assault 67% | Burglary 17% | Explosion 50% | Fighting 0% | Normal 67% | RoadAccide 67% | Robbery 50% | Shooting 0% | Shopliftin 67% | Stealing 33% | Vandalism 0%
+    (no improvement 1/10; best 39.29% at epoch 19)
+    epoch 21 [train]  25% | loss 1.6762 | acc 59.2% | 17s
+    epoch 21 [train]  50% | loss 1.7460 | acc 55.7% | 34s
+    epoch 21 [train]  75% | loss 1.7752 | acc 53.1% | 51s
+    epoch 21 [train] 100% | loss 1.7722 | acc 52.3% | 68s
+  Epoch 21/40: loss 1.7722 | train 52.3% | val raw 38.1% (loss 1.811) | val EMA 36.9% (loss 1.796) | gap 14.2% | lr 5.6e-06/5.6e-05/5.6e-04 | 155s
+    val per class (raw): Abuse 17% | Arrest 50% | Arson 50% | Assault 50% | Burglary 17% | Explosion 50% | Fighting 17% | Normal 83% | RoadAccide 67% | Robbery 33% | Shooting 0% | Shopliftin 67% | Stealing 33% | Vandalism 0%
+    (no improvement 2/10; best 39.29% at epoch 19)
+    epoch 22 [train]  25% | loss 1.6404 | acc 59.3% | 17s
+    epoch 22 [train]  50% | loss 1.7373 | acc 53.7% | 34s
+    epoch 22 [train]  75% | loss 1.7488 | acc 53.1% | 51s
+    epoch 22 [train] 100% | loss 1.7109 | acc 54.7% | 68s
+  Epoch 22/40: loss 1.7109 | train 54.7% | val raw 34.5% (loss 1.824) | val EMA 36.9% (loss 1.797) | gap 17.8% | lr 5.2e-06/5.2e-05/5.2e-04 | 155s
+    val per class (ema): Abuse 33% | Arrest 33% | Arson 50% | Assault 50% | Burglary 17% | Explosion 50% | Fighting 17% | Normal 67% | RoadAccide 67% | Robbery 33% | Shooting 0% | Shopliftin 67% | Stealing 33% | Vandalism 0%
+    (no improvement 3/10; best 39.29% at epoch 19)
+    epoch 23 [train]  25% | loss 1.6582 | acc 59.1% | 17s
+    epoch 23 [train]  50% | loss 1.6435 | acc 58.3% | 34s
+    epoch 23 [train]  75% | loss 1.6560 | acc 57.7% | 51s
+    epoch 23 [train] 100% | loss 1.6384 | acc 59.3% | 68s
+  Epoch 23/40: loss 1.6384 | train 59.3% | val raw 39.3% (loss 1.807) | val EMA 38.1% (loss 1.800) | gap 20.0% | lr 4.8e-06/4.8e-05/4.8e-04 | 154s
+    val per class (raw): Abuse 17% | Arrest 33% | Arson 50% | Assault 50% | Burglary 17% | Explosion 50% | Fighting 67% | Normal 83% | RoadAccide 67% | Robbery 17% | Shooting 0% | Shopliftin 67% | Stealing 33% | Vandalism 0%
+    (no improvement 4/10; best 39.29% at epoch 19)
+    epoch 24 [train]  25% | loss 1.6754 | acc 55.9% | 17s
+    epoch 24 [train]  50% | loss 1.6175 | acc 57.1% | 34s
+    epoch 24 [train]  75% | loss 1.6946 | acc 54.7% | 51s
+    epoch 24 [train] 100% | loss 1.6850 | acc 55.4% | 68s
+  Epoch 24/40: loss 1.6850 | train 55.4% | val raw 36.9% (loss 1.791) | val EMA 38.1% (loss 1.793) | gap 17.3% | lr 4.4e-06/4.4e-05/4.4e-04 | 154s
+    val per class (ema): Abuse 17% | Arrest 33% | Arson 50% | Assault 50% | Burglary 17% | Explosion 50% | Fighting 33% | Normal 83% | RoadAccide 67% | Robbery 33% | Shooting 0% | Shopliftin 67% | Stealing 33% | Vandalism 0%
+    (no improvement 5/10; best 39.29% at epoch 19)
+    epoch 25 [train]  25% | loss 1.5902 | acc 56.0% | 17s
+    epoch 25 [train]  50% | loss 1.5796 | acc 58.2% | 34s
+    epoch 25 [train]  75% | loss 1.6042 | acc 59.5% | 51s
+    epoch 25 [train] 100% | loss 1.6287 | acc 58.6% | 69s
+  Epoch 25/40: loss 1.6287 | train 58.6% | val raw 39.3% (loss 1.830) | val EMA 38.1% (loss 1.788) | gap 19.3% | lr 3.9e-06/3.9e-05/3.9e-04 | 156s
+    val per class (raw): Abuse 17% | Arrest 33% | Arson 83% | Assault 67% | Burglary 17% | Explosion 50% | Fighting 17% | Normal 83% | RoadAccide 67% | Robbery 17% | Shooting 0% | Shopliftin 67% | Stealing 33% | Vandalism 0%
+    (no improvement 6/10; best 39.29% at epoch 19)
+    epoch 26 [train]  25% | loss 1.6024 | acc 60.7% | 17s
+    epoch 26 [train]  50% | loss 1.5691 | acc 61.4% | 34s
+    epoch 26 [train]  75% | loss 1.6482 | acc 57.7% | 51s
+    epoch 26 [train] 100% | loss 1.6523 | acc 57.8% | 68s
+  Epoch 26/40: loss 1.6523 | train 57.8% | val raw 36.9% (loss 1.824) | val EMA 36.9% (loss 1.794) | gap 20.9% | lr 3.5e-06/3.5e-05/3.5e-04 | 154s
+    val per class (ema): Abuse 17% | Arrest 33% | Arson 50% | Assault 50% | Burglary 17% | Explosion 50% | Fighting 33% | Normal 83% | RoadAccide 67% | Robbery 17% | Shooting 0% | Shopliftin 67% | Stealing 33% | Vandalism 0%
+    (no improvement 7/10; best 39.29% at epoch 19)
+    epoch 27 [train]  25% | loss 1.7921 | acc 55.7% | 17s
+    epoch 27 [train]  50% | loss 1.6859 | acc 61.2% | 34s
+    epoch 27 [train]  75% | loss 1.6485 | acc 61.1% | 51s
+    epoch 27 [train] 100% | loss 1.6171 | acc 62.0% | 68s
+  Epoch 27/40: loss 1.6171 | train 62.0% | val raw 35.7% (loss 1.818) | val EMA 39.3% (loss 1.790) | gap 22.7% | lr 3.1e-06/3.1e-05/3.1e-04 | 159s
+    val per class (ema): Abuse 17% | Arrest 33% | Arson 50% | Assault 67% | Burglary 17% | Explosion 50% | Fighting 33% | Normal 83% | RoadAccide 67% | Robbery 33% | Shooting 0% | Shopliftin 67% | Stealing 33% | Vandalism 0%
+    >>> NEW BEST: 39.29% (ema weights) -> /home/y_rajeshwar/vlil_40/v5_ucf_crime/runs/fold3_ucf101/checkpoints/best_model.pth
+    epoch 28 [train]  25% | loss 1.5338 | acc 62.4% | 17s
+    epoch 28 [train]  50% | loss 1.5185 | acc 63.3% | 34s
+    epoch 28 [train]  75% | loss 1.5559 | acc 62.6% | 51s
+    epoch 28 [train] 100% | loss 1.5838 | acc 61.8% | 68s
+  Epoch 28/40: loss 1.5838 | train 61.8% | val raw 38.1% (loss 1.869) | val EMA 36.9% (loss 1.797) | gap 23.7% | lr 2.7e-06/2.7e-05/2.7e-04 | 154s
+    val per class (raw): Abuse 17% | Arrest 33% | Arson 67% | Assault 50% | Burglary 0% | Explosion 50% | Fighting 50% | Normal 83% | RoadAccide 67% | Robbery 17% | Shooting 0% | Shopliftin 67% | Stealing 33% | Vandalism 0%
+    (no improvement 1/10; best 39.29% at epoch 27)
+    epoch 29 [train]  25% | loss 1.4280 | acc 72.9% | 17s
+    epoch 29 [train]  50% | loss 1.4611 | acc 69.2% | 34s
+    epoch 29 [train]  75% | loss 1.5094 | acc 66.7% | 51s
+    epoch 29 [train] 100% | loss 1.5190 | acc 65.2% | 68s
+  Epoch 29/40: loss 1.5190 | train 65.2% | val raw 38.1% (loss 1.843) | val EMA 39.3% (loss 1.804) | gap 25.9% | lr 2.4e-06/2.4e-05/2.4e-04 | 154s
+    val per class (ema): Abuse 17% | Arrest 50% | Arson 50% | Assault 67% | Burglary 17% | Explosion 50% | Fighting 33% | Normal 83% | RoadAccide 67% | Robbery 17% | Shooting 0% | Shopliftin 67% | Stealing 33% | Vandalism 0%
+    (no improvement 2/10; best 39.29% at epoch 27)
+    epoch 30 [train]  25% | loss 1.5465 | acc 63.6% | 17s
+    epoch 30 [train]  50% | loss 1.5491 | acc 64.7% | 34s
+    epoch 30 [train]  75% | loss 1.6307 | acc 60.6% | 51s
+    epoch 30 [train] 100% | loss 1.6250 | acc 61.2% | 68s
+  Epoch 30/40: loss 1.6250 | train 61.2% | val raw 36.9% (loss 1.826) | val EMA 38.1% (loss 1.808) | gap 23.1% | lr 2.0e-06/2.0e-05/2.0e-04 | 154s
+    val per class (ema): Abuse 17% | Arrest 33% | Arson 50% | Assault 67% | Burglary 17% | Explosion 50% | Fighting 33% | Normal 83% | RoadAccide 67% | Robbery 17% | Shooting 0% | Shopliftin 67% | Stealing 33% | Vandalism 0%
+    (no improvement 3/10; best 39.29% at epoch 27)
+    epoch 31 [train]  25% | loss 1.6686 | acc 61.3% | 17s
+    epoch 31 [train]  50% | loss 1.6207 | acc 62.3% | 34s
+    epoch 31 [train]  75% | loss 1.5706 | acc 63.6% | 51s
+    epoch 31 [train] 100% | loss 1.5790 | acc 63.4% | 68s
+  Epoch 31/40: loss 1.5790 | train 63.4% | val raw 36.9% (loss 1.830) | val EMA 35.7% (loss 1.811) | gap 26.5% | lr 1.7e-06/1.7e-05/1.7e-04 | 154s
+    val per class (raw): Abuse 17% | Arrest 17% | Arson 50% | Assault 50% | Burglary 17% | Explosion 50% | Fighting 50% | Normal 83% | RoadAccide 67% | Robbery 17% | Shooting 0% | Shopliftin 67% | Stealing 33% | Vandalism 0%
+    (no improvement 4/10; best 39.29% at epoch 27)
+    epoch 32 [train]  25% | loss 1.4877 | acc 66.2% | 17s
+    epoch 32 [train]  50% | loss 1.5137 | acc 67.3% | 34s
+    epoch 32 [train]  75% | loss 1.5498 | acc 64.4% | 51s
+    epoch 32 [train] 100% | loss 1.5174 | acc 65.8% | 68s
+  Epoch 32/40: loss 1.5174 | train 65.8% | val raw 36.9% (loss 1.838) | val EMA 35.7% (loss 1.815) | gap 28.9% | lr 1.4e-06/1.4e-05/1.4e-04 | 154s
+    val per class (raw): Abuse 17% | Arrest 33% | Arson 50% | Assault 50% | Burglary 17% | Explosion 50% | Fighting 33% | Normal 83% | RoadAccide 67% | Robbery 17% | Shooting 0% | Shopliftin 67% | Stealing 33% | Vandalism 0%
+    (no improvement 5/10; best 39.29% at epoch 27)
+    epoch 33 [train]  25% | loss 1.4825 | acc 65.4% | 17s
+    epoch 33 [train]  50% | loss 1.5526 | acc 62.6% | 34s
+    epoch 33 [train]  75% | loss 1.4982 | acc 65.3% | 51s
+    epoch 33 [train] 100% | loss 1.5172 | acc 66.1% | 68s
+  Epoch 33/40: loss 1.5172 | train 66.1% | val raw 39.3% (loss 1.853) | val EMA 36.9% (loss 1.822) | gap 26.8% | lr 1.1e-06/1.1e-05/1.1e-04 | 154s
+    val per class (raw): Abuse 33% | Arrest 33% | Arson 50% | Assault 67% | Burglary 17% | Explosion 50% | Fighting 33% | Normal 83% | RoadAccide 67% | Robbery 17% | Shooting 0% | Shopliftin 67% | Stealing 33% | Vandalism 0%
+    (no improvement 6/10; best 39.29% at epoch 27)
+    epoch 34 [train]  25% | loss 1.5363 | acc 66.0% | 17s
+    epoch 34 [train]  50% | loss 1.5247 | acc 66.0% | 34s
+    epoch 34 [train]  75% | loss 1.5513 | acc 64.8% | 51s
+    epoch 34 [train] 100% | loss 1.5532 | acc 64.7% | 68s
+  Epoch 34/40: loss 1.5532 | train 64.7% | val raw 36.9% (loss 1.868) | val EMA 38.1% (loss 1.829) | gap 26.6% | lr 8.6e-07/8.6e-06/8.6e-05 | 154s
+    val per class (ema): Abuse 33% | Arrest 33% | Arson 50% | Assault 50% | Burglary 17% | Explosion 50% | Fighting 33% | Normal 83% | RoadAccide 67% | Robbery 17% | Shooting 0% | Shopliftin 67% | Stealing 33% | Vandalism 0%
+    (no improvement 7/10; best 39.29% at epoch 27)
+    epoch 35 [train]  25% | loss 1.6841 | acc 59.4% | 17s
+    epoch 35 [train]  50% | loss 1.6338 | acc 61.8% | 34s
+    epoch 35 [train]  75% | loss 1.5849 | acc 62.7% | 51s
+    epoch 35 [train] 100% | loss 1.6055 | acc 61.2% | 68s
+  Epoch 35/40: loss 1.6055 | train 61.2% | val raw 38.1% (loss 1.862) | val EMA 36.9% (loss 1.836) | gap 23.1% | lr 6.3e-07/6.3e-06/6.3e-05 | 154s
+    val per class (raw): Abuse 33% | Arrest 33% | Arson 50% | Assault 33% | Burglary 17% | Explosion 50% | Fighting 50% | Normal 83% | RoadAccide 67% | Robbery 17% | Shooting 0% | Shopliftin 67% | Stealing 33% | Vandalism 0%
+    (no improvement 8/10; best 39.29% at epoch 27)
+    epoch 36 [train]  25% | loss 1.6235 | acc 64.7% | 17s
+    epoch 36 [train]  50% | loss 1.6016 | acc 61.8% | 34s
+    epoch 36 [train]  75% | loss 1.6319 | acc 60.3% | 51s
+    epoch 36 [train] 100% | loss 1.6215 | acc 60.1% | 68s
+  Epoch 36/40: loss 1.6215 | train 60.1% | val raw 38.1% (loss 1.873) | val EMA 36.9% (loss 1.841) | gap 22.1% | lr 4.4e-07/4.4e-06/4.4e-05 | 154s
+    val per class (raw): Abuse 33% | Arrest 17% | Arson 50% | Assault 50% | Burglary 17% | Explosion 50% | Fighting 50% | Normal 83% | RoadAccide 67% | Robbery 17% | Shooting 0% | Shopliftin 67% | Stealing 33% | Vandalism 0%
+    (no improvement 9/10; best 39.29% at epoch 27)
+    epoch 37 [train]  25% | loss 1.5628 | acc 62.8% | 17s
+    epoch 37 [train]  50% | loss 1.5942 | acc 63.3% | 34s
+    epoch 37 [train]  75% | loss 1.5423 | acc 65.7% | 51s
+    epoch 37 [train] 100% | loss 1.5668 | acc 63.5% | 68s
+  Epoch 37/40: loss 1.5668 | train 63.5% | val raw 38.1% (loss 1.863) | val EMA 36.9% (loss 1.844) | gap 25.4% | lr 2.9e-07/2.9e-06/2.9e-05 | 154s
+    val per class (raw): Abuse 33% | Arrest 17% | Arson 50% | Assault 67% | Burglary 17% | Explosion 50% | Fighting 33% | Normal 83% | RoadAccide 67% | Robbery 17% | Shooting 0% | Shopliftin 67% | Stealing 33% | Vandalism 0%
+    (no improvement 10/10; best 39.29% at epoch 27)
+
+  EARLY STOPPING: no validation improvement for 10 epochs.
+
+======================================================================
+TRAINING COMPLETE
+  Best validation accuracy: 39.29% at epoch 27 (ema weights, train acc then 62.0%)
+  History: /home/y_rajeshwar/vlil_40/v5_ucf_crime/runs/fold3_ucf101/logs/history.csv
+======================================================================
+
+  Evaluating on the TEST set (168 videos, 8 clips x 3 crops = 24 views per video)...
+
+======================================================================
+FINAL TEST RESULTS — V5 UCF-Crime, fold 3, init ucf101
+======================================================================
+  Model used          : epoch 27 (ema weights), chosen on VALIDATION (val acc 39.29%)
+  TEST ACCURACY       : 36.90%   (8x3 views, main number)
+  Test acc, 1 view    : 39.29%   (one 8-frame clip, centre crop)
+  Test macro-F1       : 35.75%
+  Correct             : 62/168
+
+  Class              Correct   Recall  Precision      F1
+  Shoplifting         8/12      66.7%      66.7%   66.7%
+  Arson               7/12      58.3%      50.0%   53.8%
+  Abuse               6/12      50.0%      35.3%   41.4%
+  Arrest              6/12      50.0%      35.3%   41.4%
+  Burglary            6/12      50.0%      46.2%   48.0%
+  Explosion           6/12      50.0%      42.9%   46.2%
+  Stealing            6/12      50.0%      60.0%   54.5%
+  Normal              5/12      41.7%      45.5%   43.5%
+  RoadAccidents       5/12      41.7%      35.7%   38.5%
+  Assault             2/12      16.7%      22.2%   19.0%
+  Vandalism           2/12      16.7%      13.3%   14.8%
+  Fighting            1/12       8.3%      25.0%   12.5%
+  Robbery             1/12       8.3%      25.0%   12.5%
+  Shooting            1/12       8.3%       7.1%    7.7%
+
+  Confusion matrix (rows = true class, columns = predicted):
+                  Abuse Arres Arson Assau Burgl Explo Fight Norma RoadA Robbe Shoot Shopl Steal Vanda
+  Abuse               6     1     0     1     0     0     0     0     1     0     2     0     0     1
+  Arrest              2     6     0     2     0     0     0     0     1     1     0     0     0     0
+  Arson               0     0     7     0     1     1     0     0     0     0     2     0     0     1
+  Assault             2     2     0     2     0     0     0     1     0     0     2     1     0     2
+  Burglary            2     0     3     0     6     0     0     0     0     1     0     0     0     0
+  Explosion           1     1     0     0     2     6     0     0     1     0     0     0     1     0
+  Fighting            0     3     0     4     0     1     1     0     1     1     1     0     0     0
+  Normal              0     0     0     0     1     0     1     5     2     0     0     1     1     1
+  RoadAccidents       0     2     1     0     0     1     0     1     5     0     1     0     0     1
+  Robbery             2     0     0     0     0     2     2     0     0     1     2     1     1     1
+  Shooting            1     2     1     0     0     1     0     0     2     0     1     0     0     4
+  Shoplifting         0     0     0     0     1     0     0     2     0     0     1     8     0     0
+  Stealing            0     0     0     0     1     0     0     1     1     0     1     0     6     2
+  Vandalism           1     0     2     0     1     2     0     1     0     0     1     1     1     2
+
+  PUBLISHED BASELINES (Sultani et al., CVPR 2018, official 4-fold split, mean over folds):
+    C3D   : 23.0%
+    TCNN  : 28.4%
+    Chance (14 classes): 7.1%
+    V5 fold 3 (ucf101): 36.90%  (single view 39.29%)  <- one fold; compare the 4-fold mean
+
+  CRIME-WINDOW TEST (Temporal_Anomaly_Annotation; same model, annotations never used in training)
+    Test videos with an annotated crime window: 31 of 168 (Normal videos have none)
+    Whole video   (8x3 views over the full video) : 12/31 = 38.71%
+    Crime window  (2x3 views inside the window)    : 16/31 = 51.61%
+    (assumes a detector already found the moment of the crime; few videos per fold,
+     so read the pooled 4-fold number printed below)
+======================================================================
+  Saved: /home/y_rajeshwar/vlil_40/v5_ucf_crime/runs/fold3_ucf101/results/ (test_results.json, confusion_matrix.csv, per_class_metrics.csv, test_predictions.csv, crime_window_predictions.csv)
+  Folds finished with init=ucf101: [1, 2, 3] | mean test accuracy 35.91% (std 4.67)
+  Crime-window test pooled over these folds (105 videos): whole video 38.10% | crime window 44.76%
+  All runs: /home/y_rajeshwar/vlil_40/v5_ucf_crime/results_all_runs.csv
+
+  Finished: 2026-10-17 22:32:33
+===== EXIT CODE 0 at Sat Oct 17 22:32:37 IST 2026 =====

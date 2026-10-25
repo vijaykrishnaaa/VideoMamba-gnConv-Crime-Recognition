@@ -1,0 +1,67 @@
+======================================================================
+V6 DATASET REPORT — UCF-Crime crime moments
+======================================================================
+Crime videos on disk: 950 | decoded OK: 950 | unreadable: 0 | skipped (--unmatched skip): 0
+
+Class            Train   Val  Test   train windows: UCA / whole   median window (s)
+----------------------------------------------------------------------------------
+Abuse               41     7     2       42 / 6                          42.1 / 2.7
+Arrest              38     7     5       45 / 0                         74.0 / 55.5
+Arson               35     6     9       41 / 0                         34.8 / 16.7
+Assault             40     7     3       44 / 3                         17.4 / 34.1
+Burglary            74    13    13       72 / 15                        20.3 / 39.0
+Explosion           25     4    21       29 / 0                          14.9 / 6.4
+Fighting            38     7     5       41 / 4                         30.8 / 30.4
+RoadAccidents      108    19    23      118 / 9                          16.1 / 3.0
+Robbery            123    22     5      117 / 28                        24.9 / 16.0
+Shooting            23     4    23       21 / 6                          16.4 / 9.0
+Shoplifting         25     4    21       17 / 12                         27.4 / 7.0
+Stealing            81    14     5       72 / 23                        22.6 / 23.0
+Vandalism           38     7     5       33 / 12                        21.9 / 14.1
+----------------------------------------------------------------------------------
+TOTAL              689   121   140
+(median window: train UCA windows / test official windows)
+
+Train videos: median length 71.3s -> median crime window 22.6s (the model now sees ~32% of the video, around the crime)
+Test windows (official): median 9.0s | min 1.0s | max 230.4s
+Quality check on 124 test videos (keyword window from UCA vs official window): mean IoU 0.36, the keyword window covers 77% of the official crime
+
+One example per class (train, UCA crime sentences used):
+  Abuse          Abuse001_x264 [19.27s of 90.97s]: A man wearing a white shirt and black pants approached a short-haired, fat woman wearing a white shirt and black pants. When the woman was not paying attention, || A man in black clothes approached a 
+  Arrest         Arrest002_x264 [56.6s of 59.67s]: A man in a white T-shirt quickly ran over and subdued the man leaning against the goalpost to the ground. || A man came out of a door and looked at the man in the white T-shirt and the man who was pre
+  Arson          Arson001_x264 [18.17s of 139.57s]: A man in black got out of the car at the front door and poured gasoline on the door of the house. || The man came out to the door again and lit a fire and burned himself || The man on fire kept runnin
+  Assault        Assault001_x264 [45.37s of 82.87s]: Three men were fighting. Two men knocked the other man over the flower bed and punched and kicked him repeatedly. || A man who was beating someone stopped attacking, and the remaining man continued to
+  Burglary       Burglary001_x264 [24.87s of 132.3s]: A truck backed up quickly, broke through the door, and then drove forward. || Two men got off the car and broke into the door, and one person entered the room.
+  Explosion      Explosion001_x264 [11.93s of 21.17s]: After a burst of light, dust, soil and rocks were waiting in the air.
+  Fighting       Fighting002_x264 [30.77s of 89.6s]: Man throwing chair at woman || A man threw two cups || Several cups were thrown into the counter || The man threw several stools and smashed the tabletop.
+  RoadAccidents  RoadAccidents003_x264 [13.73s of 49.43s]: A child in orange clothes fell on the steps while carrying another child on a bicycle.
+  Robbery        Robbery001_x264 [16.33s of 32.9s]: A man wearing a red helmet and gray short-sleeves followed closely, and took out a knife and pointed it at the black-haired man. || The man in gray clothes held a knife in his right hand and waved wit
+  Shooting       Shooting001_x264 [8.33s of 8.43s]: A man in white clothes walked into the room, holding a black pistol in his hand || Man in white clothes shoots || The shooting man in white clothes bent down and left
+  Shoplifting    Shoplifting003_x264 [16.53s of 360.57s]: The man in the blue shirt in front of the counter took something, then went to the table next to him, opened a book, stuffed it in, sorted it and put it aside, 
+  Stealing       Stealing002_x264 [9.13s of 117.23s]: The white car took a few steps back and then moved forward and drove away from the black car.
+  Vandalism      Vandalism002_x264 [50.83s of 61.37s]: A man in gray wearing a hat and carrying a blue schoolbag threw a stone and then turned around || The man in gray wearing a hat and carrying a blue schoolbag turned around and picked up the stone that
+
+TRAIN/VAL <-> TEST near-duplicate videos (>= 3 matching frames): 18
+  test/Arrest007_x264  ~  train/Assault013_x264   [matching frames: 3]
+  test/Arson018_x264  ~  train/Arson021_x264   [matching frames: 3]
+  test/Explosion004_x264  ~  train/RoadAccidents035_x264   [matching frames: 3]
+  test/Explosion004_x264  ~  train/Robbery129_x264   [matching frames: 3]
+  test/Explosion007_x264  ~  train/Stealing114_x264   [matching frames: 4]
+  test/Explosion016_x264  ~  train/Abuse021_x264   [matching frames: 3]
+  test/Explosion016_x264  ~  train/Burglary047_x264   [matching frames: 3]
+  test/Explosion016_x264  ~  train/Explosion051_x264   [matching frames: 8]
+  test/Explosion021_x264  ~  train/Arson021_x264   [matching frames: 3]
+  test/Fighting018_x264  ~  train/Arson044_x264   [matching frames: 3]
+  test/RoadAccidents121_x264  ~  train/Burglary030_x264   [matching frames: 3]
+  test/RoadAccidents121_x264  ~  train/Robbery129_x264   [matching frames: 3]
+  test/RoadAccidents121_x264  ~  train/Stealing071_x264   [matching frames: 3]
+  test/Shooting015_x264  ~  train/Arrest009_x264   [matching frames: 16]
+  test/Shooting015_x264  ~  train/Assault051_x264   [matching frames: 3]
+  test/Shooting043_x264  ~  train/Arson021_x264   [matching frames: 6]
+  test/Shooting043_x264  ~  train/Arson039_x264   [matching frames: 3]
+  test/Shooting043_x264  ~  train/RoadAccidents138_x264   [matching frames: 3]
+
+Split lists: /home/y_rajeshwar/vlil_40/v6_crime_moments/splits (train.csv, val.csv, test.csv, classes.txt, crime_windows.csv)
+Frame cache: /home/y_rajeshwar/vlil_40/v6_crime_moments/frame_cache  (newly decoded: 950, reused: 0)
+Total time: 298s
+PREP DONE

@@ -1,0 +1,77 @@
+======================================================================
+VideoMamba V6 — HorNet gnConv2D + UCF-Crime
+Backbone: VideoMamba-Small + gnConv2D (order=5, multi-scale [3,5,7,1])
+Dataset: UCF-Crime (13 violence classes, CSV splits)
+Frames=8 | Batch=1 | Accum=8 | Effective=8
+Epochs=50 | Warmup=5
+LR_backbone=1e-05 | LR_gnconv=0.0001 | LR_head=0.001
+Unfreeze last 8 layers + gnConv in last 8 layers
+Dropout=0.3 | Label smooth=0.1 | Mixup=0.2
+Weight decay=0.05 | Patience=20 | AMP=OFF (float32)
+TTA=True | Temporal Jitter=ON | RandomErasing=ON
+======================================================================
+
+  Loading UCF-Crime dataset from folder structure...
+  Found 13 classes: ['Dragging', 'Hitting', 'Kicking', 'Pushing', 'abuse', 'hair pulling', 'neck grabbing', 'punch', 'robbery', 'shooting', 'slap', 'snatching', 'stabbing']
+  [TRAIN] Loaded 655 videos (1 non-video files skipped) from /home/y_rajeshwar/final_year_project_29/dataset_new_split/train
+  [VAL] Loaded 168 videos (0 non-video files skipped) from /home/y_rajeshwar/final_year_project_29/dataset_new_split/test
+
+  Train distribution:
+    Dragging            :  54 videos
+    Hitting             :  54 videos
+    Kicking             :  48 videos
+    Pushing             :  51 videos
+    abuse               :  46 videos
+    hair pulling        :  48 videos
+    neck grabbing       :  48 videos
+    punch               :  50 videos
+    robbery             :  48 videos
+    shooting            :  51 videos
+    slap                :  50 videos
+    snatching           :  48 videos
+    stabbing            :  59 videos
+  Total train: 655 | Total val: 168
+
+  Class weights (for imbalance):
+    Dragging            : 0.93
+    Hitting             : 0.93
+    Kicking             : 1.05
+    Pushing             : 0.99
+    abuse               : 1.10
+    hair pulling        : 1.05
+    neck grabbing       : 1.05
+    punch               : 1.01
+    robbery             : 1.05
+    shooting            : 0.99
+    slap                : 1.01
+    snatching           : 1.05
+    stabbing            : 0.85
+  === VideoMamba V6 — HorNet gnConv2D + UCF-Crime ===
+Use checkpoint: False
+Checkpoint number: 0
+  Model created with gnConv2D (order=5, multi-scale) in all 24 Mamba layers
+  Loading Kinetics-400 pretrained weights...
+  Missing keys (gnConv2D + head, new): 1058
+  Unexpected keys (discarded): 0
+  Total Mamba layers: 24
+  Freezing layers 0-15, Unfreezing layers 16-23
+  gnConv2D params unfrozen in last 8 layers: 90,817,536
+
+  ==================================================
+  MODEL PARAMETERS:
+    Patch Embedding:            374,400
+    Mamba SSM Layers:        25,030,656
+    gnConv2D Modules:       272,452,608
+    Classification Head:          5,005
+    Norm / Other:                 9,600
+    ----------------------------------------
+    Total:                  297,872,269
+    Trainable:               99,169,549 (33.3%)
+    Frozen:                 198,702,720 (66.7%)
+  ==================================================
+  Estimated FLOPs: ~56 GFLOPs per video (8 frames)
+
+  Optimizer groups:
+    Backbone params: 8,347,008 (lr=1e-05)
+    gnConv2D params: 90,817,536 (lr=0.0001)
+    Head params:     5,005 (lr=0.001)

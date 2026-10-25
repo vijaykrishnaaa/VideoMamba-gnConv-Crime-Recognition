@@ -1,0 +1,81 @@
+annotated-doc==0.0.4
+anyio==4.14.2
+appdirs==1.4.4
+attrs @ file:///home/task_177495965067701/croot/attrs_1774959675312/work
+Automat @ file:///home/task_178178432257067/croot/automat_1781784359293/work
+bcrypt @ file:///croot/bcrypt_1747402770140/work
+buildtools==1.0.6
+-e git+https://github.com/hustvl/Vim.git@dd0358ad1e42701f22afbefa0717cc8825cf9f45#egg=causal_conv1d&subdirectory=causal-conv1d
+certifi==2022.12.7
+cffi @ file:///croot/cffi_1736182485317/work
+charset-normalizer==2.1.1
+click==8.4.2
+constantly @ file:///croot/constantly_1703165600746/work
+cryptography @ file:///croot/cryptography_1740577825284/work
+decord==0.6.0
+docopt==0.6.2
+einops==0.8.2
+exceptiongroup==1.3.1
+filelock==3.29.0
+fsspec==2026.4.0
+furl==2.1.4
+greenlet @ file:///croot/greenlet_1733860072744/work
+h11==0.16.0
+hf-xet==1.5.2
+httpcore==1.0.9
+httpx==0.28.1
+huggingface_hub==0.36.2
+hyperlink @ file:///tmp/build/80754af9/hyperlink_1610130746837/work
+idna @ file:///home/task_178056146130747/croot/idna_1780561512929/work
+incremental @ file:///croot/incremental_1743512672142/work
+Jinja2==3.1.6
+-e git+https://github.com/hustvl/Vim.git@dd0358ad1e42701f22afbefa0717cc8825cf9f45#egg=mamba_ssm&subdirectory=mamba-1p1p1
+markdown-it-py==4.2.0
+MarkupSafe==3.0.3
+mdurl==0.1.2
+mpmath==1.3.0
+networkx==3.4.2
+ninja==1.13.0
+numpy==1.26.4
+opencv-python==4.11.0.86
+orderedmultidict==1.0.2
+packaging==26.0
+pandas==2.2.1
+pillow==12.2.0
+protobuf==7.35.1
+pyasn1 @ file:///home/task_177516583814635/croot/pyasn1_1775165862811/work
+pyasn1_modules @ file:///croot/pyasn1-modules_1752042891371/work
+pycparser @ file:///home/task_177495969016250/croot/pycparser_1774959730411/work
+Pygments==2.20.0
+pyOpenSSL @ file:///croot/pyopenssl_1741343803032/work
+python-dateutil==2.9.0.post0
+pytz==2026.2
+PyYAML==6.0.3
+redo==3.0.0
+regex==2026.7.19
+requests==2.28.1
+rich==15.0.0
+safetensors==0.8.0
+scipy==1.15.3
+service-identity @ file:///croot/service_identity_1749714984647/work
+shellingham==1.5.4
+simplejson==4.1.1
+six==1.17.0
+SQLAlchemy @ file:///croot/sqlalchemy_1756710012687/work
+sympy==1.14.0
+tensorboardX==2.6.5
+timm==0.4.12
+tokenizers==0.15.2
+tomli @ file:///home/task_176829635583515/croot/tomli_1768296437642/work
+torch==2.1.1+cu118
+torchaudio==2.1.1+cu118
+torchvision==0.16.1+cu118
+tqdm==4.69.0
+transformers==4.36.1
+triton==2.1.0
+Twisted @ file:///home/task_176225242279374/conda-bld/twisted_1762252433943/work
+typer==0.27.0
+typing_extensions==4.15.0
+tzdata==2026.3
+urllib3==1.26.13
+zope.interface @ file:///croot/zope.interface_1731939362051/work
